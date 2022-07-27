@@ -24,8 +24,8 @@ const App = () => {
             {/* <Route path="users" element={<Users />} /> */}
             <Route path="/categories" element={<Categories/>} />
             <Route path="/categories/:CategoryName" element={<Cours />} />
-            <Route path="/categories/:CategoryName/cours/:coursename" element={<Chapiter/>} />
-            <Route path="categories/:CategoryName/cours/:coursename/chapiter/:chapitername" element={<Labs />} />
+            <Route path="/categories/:CategoryName/cours/:CourseName" element={<Chapiter/>} />
+            <Route path="categories/:CategoryName/cours/:CourseName/chapiter/:ChapiterName" element={<Labs />} />
             {/* <Route path="steps" element={<Steps />} /> */}
             <Route path="/profile" element={<Profile />} />
             <Route path="/settings" element={<Settings />} />

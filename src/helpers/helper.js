@@ -37,3 +37,32 @@ export const levelStr = (level) => {
         return "Pas un niveau valide"
     }
 }
+
+export const formatDate = (value) => {
+    if(value){
+        return value.toLocaleString('en-US');
+    }
+    return 
+}
+
+export function msToTime(duration) {
+    let milliseconds = parseInt((duration % 1000) / 100),
+    seconds = Math.floor((duration / 1000) % 60),
+    minutes = Math.floor((duration / (1000 * 60)) % 60),
+    hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+    
+    hours = (hours < 10) ? "0" + hours : hours;
+    minutes = (minutes < 10) ? "0" + minutes : minutes;
+    seconds = (seconds < 10) ? "0" + seconds : seconds;
+    let time = "";
+    if(hours != "00"){
+        time += `${hours} hours`
+        if(minutes != "00"){
+            time += `${minutes} minutes`
+        }
+    }
+    else if(minutes != "00"){
+        time += `${minutes} minutes`
+    }
+    return time;
+}

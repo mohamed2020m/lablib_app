@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import {GetCategory, GetCategoryItem} from '../service/CategoryService';
 import logo from '../data/logo.png'
+import '../css/navBar.css'
 
 const Header = () => {
     const [categories, setCategories] = useState([]);

@@ -1,12 +1,13 @@
-import React, {useState, useEffect}from 'react'
-import { useParams } from 'react-router-dom'
+import React, {useState, useEffect} from 'react'
+import {useParams } from 'react-router-dom'
 import Skeleton , {SkeletonTheme} from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 
 import {GetCategory, GetCategoryItem} from '../service/CategoryService';
-import {findIdCategory, levelStr, RemoveWhiteSpaceNameFromURL} from '../helpers/helper';
+import {findIdCategory, levelStr, RemoveWhiteSpace} from '../helpers/helper';
 
 import img404 from '../data/Img404.png'
+import courseIcon from '../data/course-18.png'
 
 const Courses = () => {
     const {CategoryName} = useParams();
@@ -16,9 +17,9 @@ const Courses = () => {
     const [loaded, setLoaded] = useState(false)
 
     const url = 'https://lablib-api.herokuapp.com/api/v1/image';
+    const Empty = "This is an empty description as there is no decription in the db, this will be replaced if the decription for this item is available in db."
 
     useEffect(() => {
-        console.log("categories")
         async function fetchCategories(){
             try{
                 let res = await GetCategory();
@@ -29,8 +30,8 @@ const Courses = () => {
                 }
                 else{
                     let err = await res.json();
-                    throw err[0].message;
                     setLoaded(false);
+                    throw err[0].message;
                 }
             }
             catch (err){
@@ -134,17 +135,16 @@ const Courses = () => {
 
     }, [isLoading, loaded]) 
 
-    console.log("findIdCategory(programmation-c/s, categories): ", findIdCategory("programmation-c/s", categories))
     return(
         <main>
         <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
-                <li className="breadcrumb-item"><i className="icon-home mr-2"></i><a href="./../index.html">Accueil</a></li>
+                <li className="breadcrumb-item"><i className="icon-home mr-2"></i><a href="/">Accueil</a></li>
                 <li className="breadcrumb-item">
-                    <img width="19" src="./../assets/images/new/course-18.png" className="mr-2" />
-                    <a href="./../cours.html">Cours</a>
+                    <img width="19" src={courseIcon} className="mr-2" />
+                    <a href="/categories">Cours</a>
                 </li>
-                <li className="breadcrumb-item active" aria-current="page">Développement Mobile</li>
+                <li className="breadcrumb-item active" aria-current="page">{CategoryName.toUpperCase()}</li>
             </ol>
         </nav>
         <div className="ch_container">
@@ -157,14 +157,14 @@ const Courses = () => {
                                 <div className="ch_card-image"><img src={item.image ? `${url}/${item.image}` : `${img404}`} width="100" alt="item.name" /></div>
                                 <div className="ch_card-info">
                                     <div className="ch_card_title text-center my-3">
-                                        <h3><a href="Développement Mobile/kotlin.html">{item.name}</a></h3>
+                                        <h3><a href={`/categories/${RemoveWhiteSpace(CategoryName)}/cours/${RemoveWhiteSpace(item.name)}`}>{item.name}</a></h3>
                                     </div>
                                     <div className="ch_card_description my-3">
-                                        <p>{item.description || "Empty"}</p>
+                                        <p>{item.description || Empty}</p>
                                     </div>
                                 </div>
                                 <div className="ch_card_body">
-                                    <a href="Développement Mobile/kotlin.html" className="btn border-dark ch_btn">Commencer le cours</a>
+                                    <a href={`/categories/${RemoveWhiteSpace(CategoryName)}/cours/${RemoveWhiteSpace(item.name)}`} className="btn border-dark ch_btn">Commencer le cours</a>
                                 </div>
                                 <div className="ch_card-footer">
                                     <span className="mx-2">Niveau: <strong className={`text-${levelStr(item.level)[0]}`}>{levelStr(item.level)[1]}</strong></span> 

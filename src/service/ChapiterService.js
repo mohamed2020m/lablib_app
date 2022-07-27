@@ -1,11 +1,13 @@
-export async function GetChapiter() {
+export async function GetChapiter(id) {
+    return await fetch(`https://lablib-api.herokuapp.com/api/v1/chapter/${id}`);
+}
+
+export async function GetChapiters() {
     return await fetch('https://lablib-api.herokuapp.com/api/v1/chapter');
 }
 
 export async function GetChapiterItem(id) {
-    const response = await fetch(`https://lablib-api.herokuapp.com/api/v1/chapter/${id}/list`);
-    const categories = await response.json();
-    return categories;
+    return await fetch(`https://lablib-api.herokuapp.com/api/v1/chapter/${id}/list`);
 }
 
 export async function PostChapiter(newChapiter) {

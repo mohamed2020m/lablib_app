@@ -4,6 +4,7 @@ import Skeleton , {SkeletonTheme} from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 import {GetCategory} from '../service/CategoryService';
 import img404 from '../data/Img404.png'
+import courseIcon from '../data/course-18.png'
 import {RemoveWhiteSpace} from '../helpers/helper'
 
 const Categories = () => {
@@ -11,6 +12,7 @@ const Categories = () => {
     const [isLoading, setIsLoading] = useState(true)
 
     const url = 'https://lablib-api.herokuapp.com/api/v1/image';
+    const Empty = "This is an empty description as there is no decription in the db, this will be replaced if the decription for this item is available in db."
 
     useEffect(() => {
         async function fetchData(){
@@ -114,7 +116,7 @@ const Categories = () => {
             <ol className="breadcrumb">
                 <li className="breadcrumb-item"><i className="icon-home mr-2"></i><a href="index.html">Accueil</a></li>
                 <li className="breadcrumb-item active" aria-current="page">
-                    <img width="19" src="assets/images/new/course-18.png" className="mr-2" />
+                    <img width="19" src={courseIcon} className="mr-2" />
                     Cours
                 </li>
             </ol>
@@ -129,10 +131,10 @@ const Categories = () => {
                                 <div className="ch_card-image"><img src={item.image ? `${url}/${item.image}` : `${img404}`} width="100" alt="item.name" /></div>
                                 <div className="ch_card-info">
                                     <div className="ch_card_title my-3">
-                                        <h3><a href="cours/Développement Mobile.html">{item.name}</a></h3>
+                                        <h3><a href={`/categories/${RemoveWhiteSpace(item.name)}`}>{item.name}</a></h3>
                                     </div>
                                     <div className="ch_card_description my-3">
-                                        <p>{item.description || "Empty"}</p>
+                                        <p>{item.description || Empty}</p>
                                     </div>
                                 </div>
                                 <div className="ch_card_body">

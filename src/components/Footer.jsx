@@ -33,7 +33,7 @@ const Footer = () => (
             </div>
             <div className="mt-3">
                 <h6 className="text-center">Copyright © 2022 - <a href="https://new-lablib.herokuapp.com/" className="text-warning">LabLib</a> - Tous droits réservés</h6>
-                <p className="text-center">v.0.2, updated 06-21-22 by leeuw</p>
+                <p className="text-center">v.0.2, updated 07-27-22 by leeuw</p>
             </div>
         </div>
     </footer>

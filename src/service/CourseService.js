@@ -2,14 +2,16 @@ const header = new Headers({
     'Accept': 'application/json'
 });
 
-export async function GetCourse() {
+export async function GetCourse(id) {
+    return await fetch(`https://lablib-api.herokuapp.com/api/v1/course/${id}`);
+}
+
+export async function GetCourses() {
     return await fetch('https://lablib-api.herokuapp.com/api/v1/course');
 }
 
 export async function GetCourseItem(id) {
-    const response = await fetch(`https://lablib-api.herokuapp.com/api/v1/course/${id}/list`);
-    const courses = await response.json();
-    return courses;
+    return await fetch(`https://lablib-api.herokuapp.com/api/v1/course/${id}/list`);
 }
 
 export async function PostCourse(newCourse) {

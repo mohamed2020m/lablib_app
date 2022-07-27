@@ -1,0 +1,136 @@
+/* === Start main :: index === */
+
+.derniers::before{
+    content:"</";
+    color:#0AB1CE
+}
+.derniers::after{
+    content:">";
+    color:#0AB1CE
+}
+
+.home_card_title h3 > a{
+    color:black
+}
+.home_card_body{
+    position: relative;
+    color: #222;
+    padding: 10px 20px 20px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.home_card_body > span > i{
+    margin-right:5px;
+}
+.ch_btn:hover{
+    background-color: rgb(51, 148, 151);
+    color:white !important;
+    border:none;
+}
+
+.owl-carousel .owl-item .card > .card_header span{
+    border-left:3px solid #0AB1CE;
+    margin-top:-10px;
+    padding-left: 8px;
+}
+.owl-carousel .owl-item {
+    transition: all 0.3s ease-in-out;
+}
+
+.owl-carousel .owl-item .card {
+    padding: 30px;
+    position: relative;
+    width:350px;
+}
+@media screen and (max-width:400px) {
+    .owl-carousel .owl-stage {
+        padding-left:20px !important;
+    }
+    .owl-carousel .owl-item .card {
+        width:300px;
+    }
+}
+.owl-carousel .owl-stage-outer {
+    overflow-y: auto !important;
+    padding-bottom: 40px;
+}
+
+.owl-carousel .owl-item img {
+    height: 200px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.owl-carousel .owl-item .card .name {
+    position: absolute;
+    bottom: -20px;
+    left: 33%;
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 600;
+    background-color:#0AB1CE;
+    padding: 0.3rem 0.4rem;
+    border-radius: 5px;
+    box-shadow: 2px 3px 15px #3c405a;
+}
+
+.owl-carousel .owl-item .card {
+    opacity: 0.2;
+    transform: scale3d(0.8, 0.8, 0.8);
+    transition: all 0.3s ease-in-out;
+}
+
+.owl-carousel .owl-item.active.center .card {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+}
+
+.owl-carousel .owl-dots {
+    display: inline-block;
+    width: 100%;
+    text-align: center;
+}
+
+.owl-theme .owl-dots .owl-dot span {
+    height: 20px;
+    background: #2a6ba3 !important;
+    border-radius: 2px !important;
+    opacity: 0.8;
+}
+
+.owl-theme .owl-dots .owl-dot.active span,
+.owl-theme .owl-dots .owl-dot:hover span {
+    height: 13px;
+    width: 13px;
+    opacity: 1;
+    transform: translateY(2px);
+    background: #83b8e7 !important;
+}
+
+@media(min-width: 480.6px) and (max-width: 575.5px) {
+    .owl-carousel .owl-item .card .name {
+        left: 24%;
+    }
+}
+
+@media(max-width: 360px) {
+    .owl-carousel .owl-item .card .name {
+        left: 30%;
+    }
+}
+
+@media screen and (max-width:400px) {
+    .der_h2{
+        font-size: 29px !important;
+    }
+}
+
+
+.modal_fix_my_heigth{
+    height:80vh;
+    overflow-y: auto;
+}
+
+/* === End main ::: index === */
