@@ -39,8 +39,9 @@ export const levelStr = (level) => {
 }
 
 export const formatDate = (value) => {
+    const para = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
     if(value){
-        return value.toLocaleString('en-US');
+        return value.toLocaleString('fr-FR', para);
     }
     return 
 }

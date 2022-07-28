@@ -8,8 +8,8 @@ const Footer = () => (
                     <ul>
                         <li className="p-2">About</li>
                         <hr />
-                        <li className="p-2"><a href="about.html">L'équipe</a></li>
-                        <li className="p-2"><a href="contatct.html">Contact</a></li>
+                        <li className="p-2"><a href="/about">L'équipe</a></li>
+                        <li className="p-2"><a href="/contatct">Contact</a></li>
                     </ul>
                 </div>
                 <div className="col-sm-4">

@@ -128,7 +128,6 @@ a, a:hover {
 
 .ch_header{
     display:flex;
-    justify-content:space-around;
     align-items:center;
     font-family: "Poppins", sans-serif;
     padding:25px 15px;
@@ -163,6 +162,20 @@ a, a:hover {
     box-shadow: 0 5px 25px rgb(1 1 1 / 20%);
     border-radius: 10px;
     overflow: hidden;
+}
+
+@media screen and (max-width:400px){
+    .ch_card, .ch_card_lab{
+        position: relative;
+        background: #fff;
+        max-width: 375px;
+        width: 325px;
+        height: auto;
+        margin: 25px;
+        box-shadow: 0 5px 25px rgb(1 1 1 / 20%);
+        border-radius: 10px;
+        overflow: hidden;
+    }
 }
 .ch_card_lab{
     border-top:3px solid #077bff;

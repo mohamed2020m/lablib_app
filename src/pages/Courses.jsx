@@ -174,9 +174,9 @@ const Courses = () => {
                         )
                     })
                     :
-                    Array(6).fill(0).map((item) => {
+                    [1,2,3,4,5,6].map((item) => {
                         return(
-                            <SkeletonTheme baseColor="#202020" highlightColor="#444">
+                            <SkeletonTheme baseColor="#202020" highlightColor="#444" key={item}>
                             <div className="ch_card">
                                 <div className="ch_card-image">
                                     <Skeleton circle={true}/>

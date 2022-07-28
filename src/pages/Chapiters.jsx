@@ -12,10 +12,10 @@ import courseIcon from '../data/course-18.png'
 const url = 'https://lablib-api.herokuapp.com/api/v1/image';
 const Empty = "This is an empty description as there is no decription in the db, this will be replaced if the decription for this item is available in db."
 
-const ChapitersBoxes = ({chapiters, isLoading}) => {
+const ChapitersBoxes = ({chapiters, CourseName}) => {
     return(
     <div className="ch_card-content" style={{display: "none"}}>
-    {!isLoading ?
+    {chapiters.length ?
     chapiters.map((item) => (
         <div className="ch_card" key={item.id}>
             <div className="ch_card-image"><img src={item.image ? `${url}/${item.image}` : `${img404}` } width="100" alt={item.name} /></div>
@@ -27,14 +27,14 @@ const ChapitersBoxes = ({chapiters, isLoading}) => {
             </div>
             <div className="ch_card-info">
                 <div className="ch_card_title my-3">
-                    <h3><a href="kotlin/Introduction à Kotlin.html">{item.name}</a></h3>
+                    <h3><a href={`${CourseName}/chapiter/${RemoveWhiteSpace(item.name)}`}>{item.name}</a></h3>
                 </div>
                 <div className="ch_card_description my-3">
                     <p>{item.description || Empty}</p>
                 </div>
             </div>
             <div className="ch_card_body">
-                <a href="kotlin/Introduction à Kotlin.html" className="btn border-dark ch_btn">Commencer</a>
+                <a href={`${CourseName}/chapiter/${RemoveWhiteSpace(item.name)}`} className="btn border-dark ch_btn">Commencer</a>
             </div>
             
             <div className="ch_card-footer">
@@ -43,29 +43,9 @@ const ChapitersBoxes = ({chapiters, isLoading}) => {
         </div>
     ))
     :
-    Array(6).fill(0).map((item) => {
-        return(
-            <SkeletonTheme baseColor="#202020" highlightColor="#444" key={item+1}>
-                <div className="ch_card">
-                    <div className="ch_card-image">
-                        <Skeleton circle={true}/>
-                    </div>
-                    <div className="ch_card-info">
-                        <div className="ch_card_title my-3">
-                            <Skeleton/>
-                        </div>
-                        <Skeleton count={3} height={25}/>
-                    </div>
-                    <div className="ch_card_body">
-                        <Skeleton/>
-                    </div>
-                    <div className="ch_card-footer">
-                        <span className="mx-2"><Skeleton/></span>
-                    </div>
-                </div>
-            </SkeletonTheme>
-        )
-    })
+    <div className="flex justify-content-center align-content-center">
+        No Chapiters exist!
+    </div>
     }
     </div>
 )}
@@ -227,27 +207,45 @@ const Chapitres = () => {
                 <li className="breadcrumb-item active" aria-current="page">{course.name}</li>
             </ol>
         </nav>
-        <div className="ch_header">
-            <div className='row align-items-center'>
-                <div className="col-8 py-3 px-4 text-light">
-                    <h2>Cours: {course.name}</h2>
-                    <p>{course.description || Empty}</p>
-                </div>
-                <div className="col-4">
-                    <div className='d-flex justify-content-center'>
-                        <img src={course.image ? `${url}/${course.image}` : `${img404}` } width="100" alt="logo" />
-                    </div>
+        <div className='ch_header row align-items-center'>
+            <div className="col-8 py-3 px-4 text-light">
+                <h2>Cours: <span className="text-warning">{course.name}</span></h2>
+                <p>{course.description || Empty}</p>
+            </div>
+            <div className="col-4">
+                <div className='d-flex justify-content-center'>
+                    <img src={course.image ? `${url}/${course.image}` : `${img404}` } width="100" alt="logo" />
                 </div>
             </div>
         </div>
         <div className="ch_container">
                 {
-                    chapiters.length ?  
-                        <ChapitersBoxes isLoading={isLoading} chapiters={chapiters}/>
+                    !isLoading ?  
+                        <ChapitersBoxes chapiters={chapiters} CourseName={CourseName}/>
                     :
-                    <div className="flex justify-content-center align-content-center">
-                        No Chapiters exist!
-                    </div>
+                    [1,2,3,4,5,6].map((item) => {
+                        return(
+                            <SkeletonTheme baseColor="#202020" highlightColor="#444" key={item}>
+                                <div className="ch_card">
+                                    <div className="ch_card-image">
+                                        <Skeleton circle={true}/>
+                                    </div>
+                                    <div className="ch_card-info">
+                                        <div className="ch_card_title my-3">
+                                            <Skeleton/>
+                                        </div>
+                                        <Skeleton count={3} height={25}/>
+                                    </div>
+                                    <div className="ch_card_body">
+                                        <Skeleton/>
+                                    </div>
+                                    <div className="ch_card-footer">
+                                        <span className="mx-2"><Skeleton/></span>
+                                    </div>
+                                </div>
+                            </SkeletonTheme>
+                        )
+                    })
                 }
 
                 {!isLoading && chapiters && chapiters.length > 0 ?

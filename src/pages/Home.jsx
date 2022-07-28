@@ -1,6 +1,9 @@
 import React, {useEffect} from 'react';
 
 import '../css/Home.css'
+import badge from '../data/badge.svg'
+import badge_1 from '../data/badge_1.svg'
+import badge_2 from '../data/badge_2.svg'
 
 const Home = () => {
 
@@ -47,7 +50,7 @@ const Home = () => {
                                 <hr />
                             </div>
                             <div className="img-card">
-                                <img src="assets/images/new/badge_2.svg" alt=""/>
+                                <img src={badge} alt=""/>
                             </div>
                             <div className="home_card_title">
                                 <h3><a href="kotlin/Introduction à Kotlin.html">Introduction à Kotlin</a></h3>
@@ -71,7 +74,7 @@ const Home = () => {
                                 <hr/>
                             </div>
                             <div className="img-card">
-                                <img src="assets/images/new/badge.svg" alt=""/>
+                                <img src={badge_1} alt=""/>
                             </div>
                             <div className="home_card_title">
                                 <h3><a href="kotlin/Introduction à Kotlin.html">Introduction à Kotlin</a></h3>
@@ -95,7 +98,7 @@ const Home = () => {
                                 <hr />
                             </div>
                             <div className="img-card">
-                                <img src="assets/images/new/badge_1.svg" alt="" />
+                                <img src={badge_2} alt="" />
                             </div>
                             <div className="home_card_title">
                                 <h3><a href="kotlin/Introduction à Kotlin.html">Introduction à Kotlin</a></h3>
@@ -119,7 +122,7 @@ const Home = () => {
                                 <hr/>
                             </div>
                             <div className="img-card">
-                                <img src="assets/images/new/badge_2.svg" alt=""/>
+                                <img src={badge} alt=""/>
                             </div>
                             <div className="home_card_title">
                                 <h3><a href="kotlin/Introduction à Kotlin.html">Introduction à Kotlin</a></h3>
@@ -143,7 +146,7 @@ const Home = () => {
                                 <hr />
                             </div>
                             <div className="img-card">
-                                <img src="assets/images/new/badge.svg" alt="" />
+                                <img src={badge_1} alt="" />
                             </div>
                             <div className="home_card_title">
                                 <h3><a href="kotlin/Introduction à Kotlin.html">Introduction à Kotlin</a></h3>
@@ -167,7 +170,7 @@ const Home = () => {
                                 <hr/>
                             </div>
                             <div className="img-card">
-                                <img src="assets/images/new/badge_1.svg" alt=""/>
+                                <img src={badge_2} alt=""/>
                             </div>
                             <div className="home_card_title">
                                 <h3><a href="kotlin/Introduction à Kotlin.html">Introduction à Kotlin</a></h3>
@@ -217,7 +220,7 @@ const Home = () => {
                     <div className="owl-item">
                         <div className="card">
                             <div className="card_header">
-                                <span>CodeLab</span>
+                                <span>Lab</span>
                                 <hr/>
                             </div>
                             <div className="home_card_title">
@@ -240,7 +243,7 @@ const Home = () => {
                     <div className="owl-item">
                         <div className="card">
                             <div className="card_header">
-                                <span>CodeLab</span>
+                                <span>Lab</span>
                                 <hr/>
                             </div>
                             <div className="home_card_title">

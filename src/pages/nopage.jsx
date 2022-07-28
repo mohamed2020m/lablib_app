@@ -10,8 +10,8 @@ export default function NoPage(){
                     document.title = "Not Found!"
                 </script>
             </Helmet>
-            <div className='flex justify-content-center align-content-center p-3 m-3'>
-                <img src={nocontent} alt="page dones't exist"/>
+            <div className='d-flex justify-content-center align-content-center p-3 m-3'>
+                <img src={nocontent} alt="page dones't exist" width="350" height="230"/>
             </div>
         </div>
     )

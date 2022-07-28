@@ -114,7 +114,7 @@ const Categories = () => {
         <main>
         <nav aria-label="breadcrumb">
             <ol className="breadcrumb">
-                <li className="breadcrumb-item"><i className="icon-home mr-2"></i><a href="index.html">Accueil</a></li>
+                <li className="breadcrumb-item"><i className="icon-home mr-2"></i><a href="/">Accueil</a></li>
                 <li className="breadcrumb-item active" aria-current="page">
                     <img width="19" src={courseIcon} className="mr-2" />
                     Cours
@@ -147,9 +147,9 @@ const Categories = () => {
                         )
                     })
                 : 
-                    Array(6).fill(0).map((item) => {
+                [1,2,3,4,5,6].map((item) => {
                         return(
-                            <SkeletonTheme baseColor="#202020" highlightColor="#444">
+                            <SkeletonTheme baseColor="#202020" highlightColor="#444" key={item}>
                             <div className="ch_card">
                                 <div className="ch_card-image">
                                     <Skeleton circle={true}/>
