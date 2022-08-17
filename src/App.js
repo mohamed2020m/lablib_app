@@ -12,7 +12,7 @@ import Labs from "./pages/Labs";
 import Profile from "./pages/profile";
 import Settings from "./pages/settings";
 import Contact from './pages/Contact';
-import Login from './pages/Login';
+import Login from "./pages/Login";
 import SignUp from './pages/SignUp';
 import About from "./pages/About";
 import NoPage from "./pages/nopage";
