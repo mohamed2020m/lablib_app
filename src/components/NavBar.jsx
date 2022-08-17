@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from 'react';
-
+import { useAuthContext } from '../hooks/useAuthContext'
+import { useLogout } from '../hooks/useLogout'
 import {GetCategory, GetCategoryItem} from '../service/CategoryService';
-import logo from '../data/logo.png'
-import '../css/navBar.css'
+import {GetDetailsMe} from '../service/UserService';
 import {RemoveWhiteSpace} from '../helpers/helper'
+import logo from '../data/logo.png'
+import avatar from '../data/avatar.jpg'
+import '../css/navBar.css'
 
 const Header = () => {
     const [categories, setCategories] = useState([]);
     const [courses, setCourses] = useState([]);
     const [id, setId] = useState("");
     const [onOver, setOnOver] = useState(false);
-    const [activeLogin, setActiveLogin] =  useState(true);
+    const [clickedAvatar, setClickedAvatar] = useState(false);
+    const [userDetails, setUseDetails] = useState({});
+    const [reload, setReload] = useState(false);
+    const {user} = useAuthContext();
+    const { logout } = useLogout()
+    
+    const url = 'https://lablib-api.herokuapp.com/api/v1/image';
 
     useEffect(() => {
         async function fetchCategories(){
@@ -49,20 +58,40 @@ const Header = () => {
                 // toast.current.show({ severity: 'error', summary: 'Failed', detail: err, life: 6000 });
             };
         }
-        fetchCategories();
+        async function fetchAvatar(){
+            try{
+                if(user){
+                    let res = await GetDetailsMe(user.token);
+                    if(res.ok){
+                        let d = await res.json();
+                        setUseDetails(d);
+                    }
+                    else{
+                        let err = await res.json();
+                        throw err[0].message
+                    }
+                }
+                else{
+                    setReload(true);
+                }
+            }
+            catch(err){
+                console.log("err: ", err);
+            }
+        }
+        !categories.length && fetchCategories();
         id &&  fetchCourses();
+        fetchAvatar();
 
-    }, [id]) 
+    }, [id, reload]) 
+    console.log("categories: ", categories);
 
     const handleClick = () => {
-        window.body.style.color = '#333'
-        setActiveLogin(true);
+        setTimeout(() =>{
+            logout()
+        }, 2000)
     }
 
-    const closeLoginPg = () => {
-        window.body.style.color = '#fff'
-        setActiveLogin(false);
-    }
     const hanldeOver = () => {
         setOnOver(true)
     }
@@ -71,6 +100,7 @@ const Header = () => {
         setOnOver(false)
     }
 
+    
     return (
         <>
         <div className="site-mobile-menu site-navbar-target">
@@ -81,6 +111,7 @@ const Header = () => {
             </div>
             <div className="site-mobile-menu-body"></div>
         </div>
+        
         <header className="site-navbar js-sticky-header site-navbar-target container_top_progress_bar bg-white" role="banner">
             <div className="container-fluid header_Should_be_on_top">
                 <nav className="site-navigation d-flex justify-content-between align-items-center" role="navigation">
@@ -119,16 +150,17 @@ const Header = () => {
                         <div className="d-flex align-items-center">
                             <div className='searchBar mr-3'>
                                 <form>
-                                    <div class="inner-form">
-                                    <div class="row">
-                                        <div class="input-field second">
+                                    <div className="inner-form">
+                                    <div className="row">
+                                        <div className="input-field second">
                                             <input type="search" placeholder="Recherche" />
                                         </div>
                                     </div>
                                     </div>
                                 </form>
                             </div>
-                            <div className='d-flex js-clone-singUpLoginBtns singUpLoginBtns'>
+                            {!user ?
+                            <div className='d-flex  singUpLoginBtns'>
                                 <a 
                                     className="ml-2 py-2 px-3 text-dark" 
                                     style={{border:"1px solid #0AB1CE"}}
@@ -144,6 +176,33 @@ const Header = () => {
                                     >Sign UP
                                 </a>
                             </div>
+
+                            :
+                            <div className=''>
+                                <div className='avatar-warrper'>
+                                    <img src={`${url}/${userDetails.image}`} className="Avatar_image" alt="avatar" onClick={() => setClickedAvatar((preValue => !preValue))}/>
+                                </div>
+                                {clickedAvatar &&
+                                    <div className='d-flex flex-column profile_box'>
+                                        <a href="/profile" className='mr-1'>
+                                            <div>
+                                                <i className="fa fa-user"></i>
+                                                <span className='ml-2'>Profile</span>
+                                            </div>
+                                        </a>
+                                        <a href="/settings" className='mr-1'>
+                                            <div>
+                                                <i className="fa fa-cog"></i>
+                                                <span className='ml-2'>Settings</span>
+                                            </div>
+                                        </a>
+                                        <hr />
+                                        <button onClick={handleClick}>Log out</button>
+                                    </div>
+                                }
+    
+                            </div>
+                            }
                         </div>
                     </div>
                 </nav>

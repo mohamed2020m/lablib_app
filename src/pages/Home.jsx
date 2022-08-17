@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
 
+import WhyToSub from "../components/WhyTosub"
 import '../css/Home.css'
 import badge from '../data/badge.svg'
 import badge_1 from '../data/badge_1.svg'
@@ -33,12 +34,13 @@ const Home = () => {
         });
     }, [])
     return(
+        <>
         <main>
-            <nav aria-label="breadcrumb">
+            {/* <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
                     <li className="breadcrumb-item" aria-current="page"><i className="icon-home mr-2"></i>Accueil</li>
                 </ol>
-            </nav>
+            </nav> */}
             <div className="container mt-5">
                 <h2 className="der_h2">Derniers <span className="derniers">Chapitres</span></h2>
                 <hr />
@@ -266,6 +268,9 @@ const Home = () => {
                 </div>
             </div>
         </main>
+
+        <WhyToSub />
+        </>
     )
 }
 

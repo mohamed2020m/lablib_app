@@ -2,6 +2,10 @@ export async function GetSteps() {
     return await fetch('https://lablib-api.herokuapp.com/api/v1/step');
 }
 
+export async function GetStep(id) {
+    return await fetch(`https://lablib-api.herokuapp.com/api/v1/step/${id}`);
+}
+
 export async function PostSteps(newSteps) {
     return await fetch('https://lablib-api.herokuapp.com/api/v1/step', newSteps);
 }

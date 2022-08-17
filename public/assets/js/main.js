@@ -4,7 +4,6 @@ $(function() {
 
 	//===== Prealoder
 	$(window).preloader({
-		//delay: 2000,
 		// preloader selector
 		selector: '#preloader',
 		// Preloader container holder
@@ -12,7 +11,7 @@ $(function() {
 		// 'fade' or 'remove'
 		removeType: 'fade',
 		// fade duration
-		fadeDuration: 750,
+		fadeDuration: 150,
 		// auto disimss after x milliseconds
 		delay: 0
 		
@@ -28,14 +27,14 @@ $(function() {
 	// starting of siteMenuClone
 	var siteMenuClone = function() {
 
-		$('.js-clone-nav').each(function() {
-			var $this = $(this);
-			$this.clone().attr('class', 'site-nav-wrap').appendTo('.site-mobile-menu-body');
-		});
-
 		$('.js-clone-singUpLoginBtns').each(function() {
 			var $this = $(this);
 			$this.clone().attr('class', 'site-singUpLoginBtns-wrap').appendTo('.site-mobile-menu-body');
+		});
+
+		$('.js-clone-nav').each(function() {
+			var $this = $(this);
+			$this.clone().attr('class', 'site-nav-wrap').appendTo('.site-mobile-menu-body');
 		});
 
 		setTimeout(function() {
@@ -52,7 +51,7 @@ $(function() {
 					'id' : 'collapseItem' + counter,
 				});
 				counter++;
-    		});
+			});
 		}, 1000);
 
 		$('body').on('click', '.arrow-collapse', function(e) {

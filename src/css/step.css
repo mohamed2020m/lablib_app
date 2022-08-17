@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@200&display=swap');
+
+.Step-container{
+    position: relative;
+}
+.StepContainer{
+    position: relative;
+    border-right: 1px solid rgb(153, 152, 152);
+}
+.stepWrap{
+    border:1px solid rgb(198, 197, 197);
+    cursor: pointer;
+}
+.stepActive{
+    /* border:1px solid #0AB1CE; */
+    box-shadow: 1px 1px 4px #333;
+    font-weight: bold;
+}
+
+.StepContainer:nth-child(2){
+    /* border:1px solid #0AB1CE; */
+    box-shadow: 1px 1px 4px #333;
+    font-weight: bold;
+}
+
+.stepRang{
+    color:orange !important;
+}
+.stepWrap:hover{
+    box-shadow: 1px 1px 4px #333;
+}
+
+.StepHeader{
+    font-size: 23px;
+}
+
+.activeBtn{
+    position: absolute;
+    right:-15px;
+    top:30px;
+    z-index: 10;
+}
+
+pre{
+    font-size: 13px;
+    font-family: Encode Sans, 'Times New Roman', Times, serif;
+}

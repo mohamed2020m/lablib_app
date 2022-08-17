@@ -5,6 +5,7 @@ import 'react-loading-skeleton/dist/skeleton.css'
 
 import {GetChapiter,GetChapiters, GetChapiterItem} from '../service/ChapiterService';
 import {findIdChapiter, formatDate, RemoveWhiteSpace, msToTime} from '../helpers/helper';
+import NoPage from "./nopage";
 
 import courseIcon from '../data/course-18.png'
 const Empty = "This is an empty description as there is no decription in the db, this will be replaced if the decription for this item is available in db."
@@ -91,18 +92,22 @@ const Labs = () => {
     const [chapiters, setChapiters] = useState([]);
     const [isLoading, setIsLoading] = useState(true)
     const [loaded, setLoaded] = useState(false);
+    const [IsValidURL, setIsValidURL] = useState(true);
 
     useEffect(() => {
         async function fetchChapiter(){
             try{
-                let res = await GetChapiter(findIdChapiter(ChapiterName, chapiters));
-                if(res.ok){
-                    let data = await res.json();
-                    setChapiter(data);
-                }
-                else{
-                    let err = await res.json();
-                    throw err[0].message;
+                let Chapiter_id = findIdChapiter(ChapiterName, chapiters);
+                if(Chapiter_id){
+                    let res = await GetChapiter(Chapiter_id);
+                    if(res.ok){
+                        let data = await res.json();
+                        setChapiter(data);
+                    }
+                    else{
+                        let err = await res.json();
+                        throw err[0].message;
+                    }
                 }
             }
             catch (err){
@@ -133,15 +138,22 @@ const Labs = () => {
 
         async function fetchData(ChapiterName){
             try{
-                let res = await GetChapiterItem(findIdChapiter(ChapiterName, chapiters));
-                if(res.ok){
-                    let data = await res.json();
-                    setLabs(data);
-                    setIsLoading(false);
+                let Chapiter_id = findIdChapiter(ChapiterName, chapiters);
+                if(Chapiter_id){
+                    let res = await GetChapiterItem(Chapiter_id);
+                    if(res.ok){
+                        let data = await res.json();
+                        setLabs(data);
+                        setIsLoading(false);
+                    }
+                    else{
+                        let err = await res.json();
+                        throw err[0].message
+                    }
+                    setIsValidURL(true);
                 }
                 else{
-                    let err = await res.json();
-                    throw err[0].message
+                    setIsValidURL(false);
                 }
             }
             catch (err){
@@ -154,7 +166,12 @@ const Labs = () => {
         chapiters.length && fetchChapiter(ChapiterName)
 
 
-    }, [isLoading, loaded]) 
+    }, [isLoading, loaded, IsValidURL]) 
+
+
+    if(!IsValidURL){
+        return <NoPage/>
+    }
 
     return(
         <main>
