@@ -32,8 +32,8 @@ const Footer = () => (
                 </div>
             </div>
             <div className="mt-3">
-                <h6 className="text-center">Copyright © 2022 - <a href="https://new-lablib.herokuapp.com/" className="text-warning">LabLib</a> - Tous droits réservés</h6>
-                <p className="text-center">v.0.2, updated 07-27-22 by leeuw</p>
+                <h6 className="text-center">Copyright © 2022 - <a href="https://lablib.herokuapp.com/" className="text-warning">LabLib</a> - Tous droits réservés</h6>
+                <p className="text-center">v.0.2, updated 08-18-22 by leeuw</p>
             </div>
         </div>
     </footer>
