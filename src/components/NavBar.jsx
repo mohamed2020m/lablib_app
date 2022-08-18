@@ -94,7 +94,7 @@ const Header = () => {
                     <div className="navbar">
                         <i className='bx bx-menu'></i>
                         <div className="logo">
-                            <a href="/">
+                            <a href={user ? "/home" : "/"}>
                                 <img src={logo} width="48" height="45" alt="logo" />
                             </a>
                         </div>
@@ -102,7 +102,7 @@ const Header = () => {
                         <div className="nav-links">
                             <div className="row align-items-center sidebar-logo">
                                 <div className='col-10 d-flex justify-content-center'>
-                                    <a href="/">
+                                    <a href={user ? "/home" : "/"}>
                                         <img src={logo} width="48" height="45" alt="logo" />
                                     </a>
                                 </div>
@@ -111,7 +111,8 @@ const Header = () => {
                                 </div>
                             </div>
                             <ul className="links">
-                                <li><a href="/" ><i className="icon-home"></i> Accueil</a></li>
+                                <li><a href={user ? "/home" : "/"} ><i className="icon-home"></i> Accueil</a></li>
+                                { user &&
                                 <li>
                                     <a href="/categories"><i className="fa fa-list-alt mr-1"></i>Cours</a>
                                     <i className='bx bxs-chevron-down categories-arrow arrow'></i>
@@ -141,6 +142,7 @@ const Header = () => {
                                     : null
                                     }
                                 </li>
+                                }
                                 <li><a href="/about"><i className="fa fa-info-circle mr-1"></i> à propos</a></li>
                                 <li><a href="/contact" ><i className="fa fa-address-book mr-1"></i> Contactez Nous</a></li>
                             </ul>

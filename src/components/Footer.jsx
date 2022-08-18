@@ -6,7 +6,7 @@ const Footer = () => (
             <div className="row p-3">
                 <div className="col-sm-4">
                     <ul>
-                        <li className="p-2">About</li>
+                        <li className="p-2 font-weight-bold">About</li>
                         <hr />
                         <li className="p-2"><a href="/about">L'équipe</a></li>
                         <li className="p-2"><a href="/contatct">Contact</a></li>
@@ -14,7 +14,7 @@ const Footer = () => (
                 </div>
                 <div className="col-sm-4">
                     <ul>
-                        <li className="p-2">LabLib</li>
+                        <li className="p-2 font-weight-bold">LabLib</li>
                         <hr />
                         <li className="p-2"><a href="#">Politique de confidentialité</a></li>
                         <li className="p-2"><a href="#">Faq</a></li>
@@ -23,7 +23,7 @@ const Footer = () => (
                 </div>
                 <div className="col-sm-4">
                     <ul>
-                        <li className="p-2">Réseaux sociaux</li>
+                        <li className="p-2 font-weight-bold">Réseaux sociaux</li>
                         <hr />
                         <li className="p-2"><i className="icon-facebook-square mr-2"></i><a href="#"> Facebook</a></li>
                         <li className="p-2"><i className="icon-linkedin-square mr-2"></i><a href="#"> LinkedIn</a></li>
