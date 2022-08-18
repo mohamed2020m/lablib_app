@@ -149,14 +149,6 @@ const Header = () => {
                         <div>
                             <div className="d-flex">
                                 {!user ?
-                                <>  
-                                <div className="search-box">
-                                    <i className='bx bx-search'></i>
-                                    <div className="input-box">
-                                        <input type="text" placeholder="Search..." />
-                                    </div>
-                                </div>
-
                                 <div className='d-flex singUpLoginBtns'>
                                     <a 
                                         className="ml-2 py-2 px-3 text-dark login_btn" 
@@ -169,8 +161,14 @@ const Header = () => {
                                         >Sign UP
                                     </a>
                                 </div>
-                                </>
                                 :
+                                <>
+                                <div className="search-box">
+                                    <i className='bx bx-search'></i>
+                                    <div className="input-box">
+                                        <input type="text" placeholder="Search..." />
+                                    </div>
+                                </div>
                                 <div className=''>
                                     <div className='avatar-warrper'>
                                         <img src={`${url}/${userDetails.image}`} className="Avatar_image" alt="avatar" onClick={() => setClickedAvatar((preValue => !preValue))}/>
@@ -194,6 +192,7 @@ const Header = () => {
                                         </div>
                                     }
                                 </div>
+                                </>
                                 }
                             </div>
                         </div>
