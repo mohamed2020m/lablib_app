@@ -148,6 +148,8 @@ const Header = () => {
                         
                         <div>
                             <div className="d-flex">
+                                {!user ?
+                                <>  
                                 <div className="search-box">
                                     <i className='bx bx-search'></i>
                                     <div className="input-box">
@@ -155,7 +157,6 @@ const Header = () => {
                                     </div>
                                 </div>
 
-                                {!user ?
                                 <div className='d-flex singUpLoginBtns'>
                                     <a 
                                         className="ml-2 py-2 px-3 text-dark login_btn" 
@@ -168,7 +169,7 @@ const Header = () => {
                                         >Sign UP
                                     </a>
                                 </div>
-
+                                </>
                                 :
                                 <div className=''>
                                     <div className='avatar-warrper'>
