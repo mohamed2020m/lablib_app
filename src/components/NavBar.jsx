@@ -94,7 +94,7 @@ const Header = () => {
                                                 <span>
                                                     <a href={`/categories/${RemoveWhiteSpace(category.name)}`} onMouseOver={() => setId(category.id)} onClick={() => setId(category.id)}>
                                                         {category.name}
-                                                        <i className='bx bxs-chevron-right arrow mmore-arrow icon-arrow'></i>
+                                                        <i className='bx bxs-chevron-right arrow more-arrow'></i>
                                                     </a>
                                                 </span>
                                                 <ul className="more-sub-menu sub-menu">

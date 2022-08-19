@@ -99,8 +99,7 @@
         border:1px solid #eee; 
     }
 }
-.top_nav .navbar .links li:hover .categories-sub-menu,
-.top_nav .navbar .links li:hover .js-sub-menu{
+.top_nav .navbar .links li:hover .categories-sub-menu{
     display: block;
 }
 .navbar .links li .sub-menu li{
@@ -113,7 +112,7 @@
     font-weight: 500;
 }
 @media screen and (min-width:701px){
-    .navbar .links li .sub-menu .mmore-arrow{
+    .navbar .links li .sub-menu .more-arrow{
         line-height: 40px;
         position: absolute;
         right:0;
@@ -121,7 +120,7 @@
 }
 
 @media screen and (max-width:700px){
-    .navbar .links li .sub-menu .icon-arrow{
+    .navbar .links li .sub-menu .more-arrow{
         display:none;
     }
 }
