@@ -1,9 +1,9 @@
 import React, {useEffect} from 'react';
-
-import '../css/Home.css'
-import badge from '../data/badge.svg'
-import badge_1 from '../data/badge_1.svg'
-import badge_2 from '../data/badge_2.svg'
+import Search from '../components/Search';
+import '../css/Home.css';
+import badge from '../data/badge.svg';
+import badge_1 from '../data/badge_1.svg';
+import badge_2 from '../data/badge_2.svg';
 
 const Dashboard = () => {
 
@@ -39,6 +39,9 @@ const Dashboard = () => {
                     <li className="breadcrumb-item" aria-current="page"><i className="icon-home mr-2"></i>Accueil</li>
                 </ol>
             </nav>
+            <div className="d-flex justify-content-center my-3 search_container">
+                <Search />
+            </div>
             <div className="container mt-5">
                 <h2 className="der_h2">Derniers <span className="derniers">Chapitres</span></h2>
                 <hr />

@@ -6,6 +6,8 @@ import * as Yup from 'yup';
 import imgError from '../data/error.png'
 import imgSuccess from '../data/ok.png'
 import { PostUser } from '../service/UserService';
+import logo from '../data/logo.png'
+
 const SignUp = () => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
@@ -71,6 +73,9 @@ const SignUp = () => {
                     >
                         {(formik) => (
                             <form className="w-full" onSubmit={formik.handleSubmit} encType="multipart/form-data">
+                                <div className="social-btn text-center mb-3">
+                                    <img src={logo} width="80" height="80" alt="logo" />
+                                </div>
                                 {error &&
                                 <div className='text-center text-danger mb-3 pb-3 border-bottom border-danger rounded'>
                                     <img src={imgError} alt="Error" width="30px" height="30px"/>{error}
@@ -84,12 +89,12 @@ const SignUp = () => {
                                 }
                                 <h2 className="text-center">Sign Up</h2>
                                 <p className="text-center">Merci de remplir ce formulaire pour créer un compte !</p>
-                                <div className="social-btn text-center">
+                                {/* <div className="social-btn text-center">
                                     <a href="#" className="btn btn-primary btn-lg"><i className="icon-facebook"></i> Facebook</a>
                                     <a href="#" className="btn btn-black btn-lg "><i className="icon-github"></i> Github</a>
                                     <a href="#" className="btn btn-danger btn-lg"><i className="icon-google"></i> Google</a>
                                 </div>
-                                <div className="or-seperator"><b>ou</b></div>
+                                <div className="or-seperator"><b>ou</b></div> */}
                                 <div className="form-group">
                                     <div className="row">
                                         <div className="col">

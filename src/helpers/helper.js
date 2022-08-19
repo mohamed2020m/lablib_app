@@ -1,6 +1,11 @@
 export const RemoveWhiteSpace = (name) => {
-    let newName = name.replace('/', '');
-    return newName.replace(/\s+/g, '-').toLowerCase();
+    if(name && typeof name === "string"){
+        let newName = name.replace('/', '');
+        return newName.replace(/\s+/g, '-').toLowerCase();
+    }
+    else{
+        console.warn("Invalid name in RemoveWhiteSpace function!");
+    }
 }
 
 export const findIdCategory = (name, categories) => {
@@ -147,3 +152,17 @@ export function fun(){
         return showPage(currentPage - 1);
     });
 };
+
+
+export function findName(id, type){
+    const allowed_endpoint = ['category', 'course', 'chapter'];
+    if(!allowed_endpoint.includes(type)){
+        return "No valid type"
+    }
+    return fetch(`https://lablib-api.herokuapp.com/api/v1/${type}/${id}`)
+    .then(response => response.json())
+    .then((result) => {
+        return result
+    })
+    .catch(error => console.warn(error));
+}
