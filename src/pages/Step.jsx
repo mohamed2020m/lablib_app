@@ -308,9 +308,10 @@ const Steps = () => {
                                         }
                                     </div>
                                 </div>
-                                <div className="row p-3 mt-3">
+                                {/* <div className="row p-3 mt-3">
                                     Comments : 0
-                                </div>
+                                </div> */}
+                                <div className="pb-3 mb-3"></div>
                             </div>
                         </div>
                     </div>
