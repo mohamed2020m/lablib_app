@@ -355,6 +355,7 @@
     width: 100%;
     height: 4px;
     background: #ccc;
+    position:static;
     z-index: -1;
 }
 
