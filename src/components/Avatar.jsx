@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {GetDetailsMe} from '../service/UserService';
 import { useAuthContext } from '../hooks/useAuthContext';
 import { useLogout } from '../hooks/useLogout';
-import Avatar_image from '../data/avatar.png';
+import Avatar_image from '../data/avatar.jpg';
 
 
 export default function Avatar() {
@@ -51,6 +51,11 @@ export default function Avatar() {
         </div>
         {clickedAvatar &&
             <div className='d-flex flex-column profile_box'>
+                <div>
+                    <button className='close_avatar_btn bg-white' onClick={() => setClickedAvatar((false))}>
+                        <i className="fa fa-times text-dark"></i>
+                    </button>
+                </div>
                 {user.role === 1 ? 
                 <a href="https://admin-lablib.herokuapp.com" className='mr-1'>
                     <div>

@@ -59,24 +59,28 @@ export const formatDate = (value) => {
 }
 
 export function msToTime(duration) {
-    let milliseconds = parseInt((duration % 1000) / 100),
-    seconds = Math.floor((duration / 1000) % 60),
-    minutes = Math.floor((duration / (1000 * 60)) % 60),
+    // let milliseconds = parseInt((duration % 1000) / 100),
+    // seconds = Math.floor((duration / 1000) % 60),
+    let minutes = Math.floor((duration / (1000 * 60)) % 60),
     hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
     
     hours = (hours < 10) ? "0" + hours : hours;
     minutes = (minutes < 10) ? "0" + minutes : minutes;
-    seconds = (seconds < 10) ? "0" + seconds : seconds;
+    // seconds = (seconds < 10) ? "0" + seconds : seconds;
+    
     let time = "";
-    if(hours != "00"){
-        time += `${hours} hours`
-        if(minutes != "00"){
-            time += `${minutes} minutes`
-        }
-    }
-    else if(minutes != "00"){
-        time += `${minutes} minutes`
-    }
+    time += `${hours} hours`
+    time += `, ${minutes} minutes`
+    // if(hours != "00"){
+    //     if(minutes != "00"){
+    //         time += `${minutes} minutes`
+    //     }
+    // }
+    // else if(minutes != "00"){
+    // }
+    // else if(seconds != "00"){
+    //     time += `${seconds} seconds`
+    // }
     return time;
 }
 
@@ -153,16 +157,11 @@ export function fun(){
     });
 };
 
-
-export function findName(id, type){
-    const allowed_endpoint = ['category', 'course', 'chapter'];
-    if(!allowed_endpoint.includes(type)){
-        return "No valid type"
+export function DateToString(d){
+    const date = new Date(d);
+    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+    if(date instanceof Date){
+        return date.toLocaleDateString('fr-FR', options)
     }
-    return fetch(`https://lablib-api.herokuapp.com/api/v1/${type}/${id}`)
-    .then(response => response.json())
-    .then((result) => {
-        return result
-    })
-    .catch(error => console.warn(error));
+    return "Not a valid date!"
 }

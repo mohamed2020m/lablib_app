@@ -2813,7 +2813,7 @@
 	 */
 	Navigation.Defaults = {
 		nav: false,
-		navText: [ 'prev', 'next' ],
+		navText: [ 'Précédent', 'Suivant' ],
 		navSpeed: false,
 		navElement: 'div',
 		navContainer: false,

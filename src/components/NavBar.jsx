@@ -3,7 +3,6 @@ import { useAuthContext } from '../hooks/useAuthContext'
 import {GetCategory, GetCategoryItem} from '../service/CategoryService';
 import {RemoveWhiteSpace} from '../helpers/helper'
 import logo from '../data/logo.png'
-
 import '../css/navBar.css'
 
 import Avatar from '../components/Avatar';

@@ -1,13 +1,21 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Search from '../components/Search';
-import '../css/Home.css';
-import badge from '../data/badge.svg';
-import badge_1 from '../data/badge_1.svg';
-import badge_2 from '../data/badge_2.svg';
+import {GetLatestChapiters, GetLatestLabs, GetSuggestedCourses} from '../service/LatestService';
+import {RemoveWhiteSpace, msToTime, DateToString} from '../helpers/helper';
 
+import '../css/Home.css';
+
+const url = "https://lablib-api.herokuapp.com/api/v1/image"
 const Dashboard = () => {
+    // const [suggestedCourses, setSuggestedCourses] = useState([]);
+    const [lastesChapiters, setLatestChapiters] = useState([]);
+    const [lastesLabs, setLatestLabs] = useState([]);
+    const [isLoadingChapters, setIsLoadingChapters] = useState(true);
+    const [isLoadingLabs, setIsLoadingLabs] = useState(true);
+    // const [isLoadingSuggested, setIsLoadingSuggested] = useState(true);
 
     useEffect(() => {
+
         $(document).ready(function () {
             let silder = $(".owl-carousel");
             silder.owlCarousel({
@@ -31,7 +39,73 @@ const Dashboard = () => {
                 }
             });
         });
-    }, [])
+        
+        //getting the suggested courses
+        // async function fetchSuggestedCourses(){
+        //     try{
+        //         let res = await GetSuggestedCourses();
+        //         if(res.ok){
+        //             let data = await res.json();
+        //             setSuggestedCourses(data);
+        //             setIsLoadingSuggested(false);
+        //         }
+        //         else{
+        //             let err = await res.json();
+        //             setIsLoadingSuggested(false);
+        //             throw err[0].message;
+        //         }
+        //     }
+        //     catch (err){
+        //         console.log(err);
+        //     };
+        // }
+
+        // fetchSuggestedCourses();
+
+        // getting the latest chapiters
+        async function fetchLatestChapters(){
+            try{
+                let res = await GetLatestChapiters();
+                if(res.ok){
+                    let data = await res.json();
+                    setLatestChapiters(data);
+                    setIsLoadingChapters(false);
+                }
+                else{
+                    let err = await res.json();
+                    setIsLoadingChapters(false);
+                    throw err[0].message;
+                }
+            }
+            catch (err){
+                console.log(err);
+            };
+        }
+        fetchLatestChapters();
+        //getting the latest labs
+        async function fetchLatestLabs(){
+            try{
+                let res = await GetLatestLabs();
+                if(res.ok){
+                    let data = await res.json();
+                    setLatestLabs(data);
+                    setIsLoadingLabs(false);
+                }
+                else{
+                    let err = await res.json();
+                    setIsLoadingLabs(false);
+                    throw err[0].message;
+                }
+            }
+            catch (err){
+                console.log(err);
+            };
+        }
+
+        fetchLatestLabs();
+
+        
+    }, [isLoadingLabs, isLoadingChapters])
     return(
         <main>
             <nav aria-label="breadcrumb">
@@ -42,231 +116,148 @@ const Dashboard = () => {
             <div className="d-flex justify-content-center my-3 search_container">
                 <Search />
             </div>
+            
+            
+            {/* <div className="container mt-5">
+                <h2 className="der_h2">Derniers <span className="derniers">Chapitres</span></h2>
+                <hr />
+
+                {
+                    isLoadingSuggested ? 
+                    <div className="d-flex justify-content-center">Loading...</div>
+                    :
+                    <div className="owl-carousel owl-theme mt-5">
+                        {
+                            suggestedCourses.length ?
+                            suggestedCourses.map(item => {
+                                return(
+                                    <div className="owl-item">
+                                        <div className="card">
+                                            <div className="card_header">
+                                                <span>Découvrez de nouveaux cours</span>
+                                                <hr />
+                                            </div>
+                                            <div className="d-flex justify-content-center img-card">
+                                                <img src={`${url}/${item.image}`} alt="image-chapiter"/>
+                                            </div>
+                                            <div className="home_card_title">
+                                                <h3><a href={`/categories/${RemoveWhiteSpace(item.category)}/cours/${RemoveWhiteSpace(item.$course)}/chapiter/${RemoveWhiteSpace(item.name)}`}>{item.name}</a></h3>
+                                            </div>
+                                            <div className="testimonial my-2">
+                                                {item.description}
+                                            </div>
+                                            <div className="home_card_body">
+                                                <span className="course_name mr-1"><i className="icon-folder-open"></i>{item.$course}</span>
+                                                <a href={`/categories/${RemoveWhiteSpace(item.category)}/cours/${RemoveWhiteSpace(item.$course)}/chapiter/${RemoveWhiteSpace(item.name)}`} className="btn border-dark ch_btn">Commencer</a>
+                                            </div>
+                                            <div className="name">
+                                                <cite>{DateToString(item.createdAt)}</cite>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            }) 
+                            :
+                            null
+                        }
+                    </div>
+                }
+            </div> */}
+
+
+
             <div className="container mt-5">
                 <h2 className="der_h2">Derniers <span className="derniers">Chapitres</span></h2>
                 <hr />
-                <div className="owl-carousel owl-theme mt-5">
-                    <div className="owl-item">
-                        <div className="card">
-                            <div className="card_header">
-                                <span>Chapiter</span>
-                                <hr />
-                            </div>
-                            <div className="img-card">
-                                <img src={badge} alt=""/>
-                            </div>
-                            <div className="home_card_title">
-                                <h3><a href="kotlin/Introduction à Kotlin.html">Introduction à Kotlin</a></h3>
-                            </div>
-                            <div className="testimonial my-2">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus expedita dicta doloremque.
-                            </div>
-                            <div className="home_card_body">
-                                <span className="mr-1"><i className="icon-folder-open"></i>Kotlin</span>
-                                <a href="cours/Développement%20Mobile/kotlin/Introduction%20à%20Kotlin.html" className="btn border-dark ch_btn">Commencer</a>
-                            </div>
-                            <div className="name">
-                                <cite>par Mohamed</cite>
-                            </div>
-                        </div>
+
+                {
+                    isLoadingChapters ? 
+                    <div className="d-flex justify-content-center">Loading Chapiters...</div>
+                    :
+                    <div className="owl-carousel owl-theme mt-5">
+                        {
+                            lastesChapiters.length ?
+                            lastesChapiters.map(item => {
+                                return(
+                                    <div className="owl-item" key={item.id}>
+                                        <div className="card">
+                                            <div className="card_header">
+                                                <span>Chapiter</span>
+                                                <hr />
+                                            </div>
+                                            <div className="d-flex justify-content-center img-card">
+                                                <img src={`${url}/${item.image}`} alt="image-chapiter"/>
+                                            </div>
+                                            <div className="home_card_title">
+                                                <h3><a href={`/categories/${RemoveWhiteSpace(item.category)}/cours/${RemoveWhiteSpace(item.$course)}/chapiter/${RemoveWhiteSpace(item.name)}`}>{item.name}</a></h3>
+                                            </div>
+                                            <div className="testimonial my-2">
+                                                {item.description}
+                                            </div>
+                                            <div className="home_card_body">
+                                                <span className="course_name mr-1"><i className="icon-folder-open"></i>{item.$course}</span>
+                                                <a href={`/categories/${RemoveWhiteSpace(item.category)}/cours/${RemoveWhiteSpace(item.$course)}/chapiter/${RemoveWhiteSpace(item.name)}`} className="btn border-dark ch_btn">Commencer</a>
+                                            </div>
+                                            <div className="name">
+                                                <cite>{DateToString(item.createdAt)}</cite>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            }) 
+                            :
+                            null
+                        }
                     </div>
-                    <div className="owl-item">
-                        <div className="card">
-                            <div className="card_header">
-                                <span>Chapiter</span>
-                                <hr/>
-                            </div>
-                            <div className="img-card">
-                                <img src={badge_1} alt=""/>
-                            </div>
-                            <div className="home_card_title">
-                                <h3><a href="kotlin/Introduction à Kotlin.html">Introduction à Kotlin</a></h3>
-                            </div>
-                            <div className="testimonial my-2">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus expedita dicta doloremque.
-                            </div>
-                            <div className="home_card_body">
-                                <span className="mr-1"><i className="icon-folder-open"></i>Kotlin</span>
-                                <a href="cours/Développement%20Mobile/kotlin/Introduction%20à%20Kotlin.html" className="btn border-dark ch_btn">Commencer</a>
-                            </div>
-                            <div className="name">
-                                <cite>par Mohamed</cite>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="owl-item">
-                        <div className="card">
-                            <div className="card_header">
-                                <span>Chapiter</span>
-                                <hr />
-                            </div>
-                            <div className="img-card">
-                                <img src={badge_2} alt="" />
-                            </div>
-                            <div className="home_card_title">
-                                <h3><a href="kotlin/Introduction à Kotlin.html">Introduction à Kotlin</a></h3>
-                            </div>
-                            <div className="testimonial my-2">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus expedita dicta doloremque.
-                            </div>
-                            <div className="home_card_body">
-                                <span className="mr-1"><i className="icon-folder-open"></i>Kotlin</span>
-                                <a href="cours/Développement%20Mobile/kotlin/Introduction%20à%20Kotlin.html" className="btn border-dark ch_btn">Commencer</a>
-                            </div>
-                            <div className="name">
-                                <cite>par Mohamed</cite>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="owl-item">
-                        <div className="card">
-                            <div className="card_header">
-                                <span>Chapiter</span>
-                                <hr/>
-                            </div>
-                            <div className="img-card">
-                                <img src={badge} alt=""/>
-                            </div>
-                            <div className="home_card_title">
-                                <h3><a href="kotlin/Introduction à Kotlin.html">Introduction à Kotlin</a></h3>
-                            </div>
-                            <div className="testimonial my-2">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus expedita dicta doloremque.
-                            </div>
-                            <div className="home_card_body">
-                                <span className="mr-1"><i className="icon-folder-open"></i>Kotlin</span>
-                                <a href="cours/Développement%20Mobile/kotlin/Introduction%20à%20Kotlin.html" className="btn border-dark ch_btn">Commencer</a>
-                            </div>
-                            <div className="name">
-                                <cite>par Mohamed</cite>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="owl-item">
-                        <div className="card">
-                            <div className="card_header">
-                                <span>Chapiter</span>
-                                <hr />
-                            </div>
-                            <div className="img-card">
-                                <img src={badge_1} alt="" />
-                            </div>
-                            <div className="home_card_title">
-                                <h3><a href="kotlin/Introduction à Kotlin.html">Introduction à Kotlin</a></h3>
-                            </div>
-                            <div className="testimonial my-2">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus expedita dicta doloremque.
-                            </div>
-                            <div className="home_card_body">
-                                <span className="mr-1"><i className="icon-folder-open"></i>Kotlin</span>
-                                <a href="cours/Développement%20Mobile/kotlin/Introduction%20à%20Kotlin.html" className="btn border-dark ch_btn">Commencer</a>
-                            </div>
-                            <div className="name">
-                                <cite>par Mohamed</cite>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="owl-item">
-                        <div className="card">
-                            <div className="card_header">
-                                <span>Chapiter</span>
-                                <hr/>
-                            </div>
-                            <div className="img-card">
-                                <img src={badge_2} alt=""/>
-                            </div>
-                            <div className="home_card_title">
-                                <h3><a href="kotlin/Introduction à Kotlin.html">Introduction à Kotlin</a></h3>
-                            </div>
-                            <div className="testimonial my-2">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus expedita dicta doloremque.
-                            </div>
-                            <div className="home_card_body">
-                                <span className="mr-1"><i className="icon-folder-open"></i>Kotlin</span>
-                                <a href="cours/Développement%20Mobile/kotlin/Introduction%20à%20Kotlin.html" className="btn border-dark ch_btn">Commencer</a>
-                            </div>
-                            <div className="name">
-                                <cite>par Mohamed</cite>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
 
             <div className="container mt-5">
                 <h2 className="der_h2">Derniers<span className="derniers">Labs</span></h2>
                 <hr/>
-                <div className="owl-carousel owl-theme mt-5">
-                    <div className="owl-item">
-                        <div className="card">
-                            <div className="card_header">
-                                <span>Lab</span>
-                                <hr/>
-                            </div>
-                            <div className="home_card_title">
-                                <h3><a href="https://developer.android.com/codelabs/basic-android-kotlin-compose-first-program?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-compose-unit-1-pathway-1%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-compose-first-program">Votre premier programme en Kotlin</a></h3>
-                            </div>
-                            <div className="lab_duration my-2">
-                                <span><i className="icon-clock-o mr-1"></i> 2 hours 50 minutes</span>
-                            </div>
-                            <div className="testimonial my-2">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus expedita dicta doloremque.
-                            </div>
-                            <div className="ch_card_body">
-                                <a href="kotlin/Introduction à Kotlin.html" className="btn border-dark ch_btn">Commencer le Lab</a>
-                            </div>
-                            <div className="ch_card-footer">
-                                <cite>06 Jun 2022, par Mohamed</cite>
-                            </div>
-                        </div>
+                {
+                    isLoadingLabs ?
+                    <div className="d-flex justify-content-center">Loading Labs...</div>
+                    :
+                    <div className="owl-carousel owl-theme mt-5">
+                        {
+                            lastesLabs.length ?
+                            lastesLabs.map(item => {
+                                return(
+                                    <div className="owl-item" key={item.id}>
+                                        <div className="card">
+                                            <div className="card_header">
+                                                <span>Lab</span>
+                                                <hr/>
+                                            </div>
+                                            <div className="home_card_title">
+                                                <h3>
+                                                    <a href={`/categories/${RemoveWhiteSpace(item.$category)}/cours/${RemoveWhiteSpace(item.$course)}/chapiter/${RemoveWhiteSpace(item.$chapter)}/labs/${item.name}`}>
+                                                        {item.name}
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                            <div className="lab_duration my-2">
+                                                <span><i className="icon-clock-o mr-1"></i> {msToTime(item.duration)}</span>
+                                            </div>
+                                            <div className="testimonial my-2">
+                                                {item.description}
+                                            </div>
+                                            <div className="ch_card_body">
+                                                <a href={`/categories/${RemoveWhiteSpace(item.$category)}/cours/${RemoveWhiteSpace(item.$course)}/chapiter/${RemoveWhiteSpace(item.$chapter)}/labs/${item.name}`} className="btn border-dark ch_btn">Commencer le Lab</a>
+                                            </div>
+                                            <div className="name">
+                                                <cite>{DateToString(item.createdAt)}</cite>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )
+                            })
+                            :
+                            null
+                        }
                     </div>
-                    <div className="owl-item">
-                        <div className="card">
-                            <div className="card_header">
-                                <span>Lab</span>
-                                <hr/>
-                            </div>
-                            <div className="home_card_title">
-                                <h3><a href="https://developer.android.com/codelabs/basic-android-kotlin-compose-first-program?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-compose-unit-1-pathway-1%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-compose-first-program">Votre premier programme en Kotlin</a></h3>
-                            </div>
-                            <div className="lab_duration my-2">
-                                <span><i className="icon-clock-o mr-1"></i>50 minutes</span>
-                            </div>
-                            <div className="testimonial my-2">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus expedita dicta doloremque.
-                            </div>
-                            <div className="ch_card_body">
-                                <a href="kotlin/Introduction à Kotlin.html" className="btn border-dark ch_btn">Commencer le Lab</a>
-                            </div>
-                            <div className="ch_card-footer">
-                                <cite>06 Jun 2022, par Ali</cite>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="owl-item">
-                        <div className="card">
-                            <div className="card_header">
-                                <span>Lab</span>
-                                <hr/>
-                            </div>
-                            <div className="home_card_title">
-                                <h3><a href="https://developer.android.com/codelabs/basic-android-kotlin-compose-first-program?continue=https%3A%2F%2Fdeveloper.android.com%2Fcourses%2Fpathways%2Fandroid-basics-compose-unit-1-pathway-1%23codelab-https%3A%2F%2Fdeveloper.android.com%2Fcodelabs%2Fbasic-android-kotlin-compose-first-program">Votre premier programme en Kotlin</a></h3>
-                            </div>
-                            <div className="lab_duration my-2">
-                                <span><i className="icon-clock-o mr-1"></i> 1 hours 30 minutes</span>
-                            </div>
-                            <div className="testimonial my-2">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusamus expedita dicta doloremque.
-                            </div>
-                            <div className="ch_card_body">
-                                <a href="kotlin/Introduction à Kotlin.html" className="btn border-dark ch_btn">Commencer le Lab</a>
-                            </div>
-                            <div className="ch_card-footer">
-                                <cite>06 Jun 2022, par Karim</cite>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
             </div>
         </main>
     )

@@ -59,6 +59,7 @@
 
 .search_btn{
     border: 1px solid #0AB1CE !important;
+    z-index:1;
 }
 .search_btn:hover{
     color:white !important;

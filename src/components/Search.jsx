@@ -181,7 +181,7 @@ export default function Search() {
                                                         </div>
                                                         <div className='col-9 d-flex align-items-center'>
                                                             <div>
-                                                                <h4><a href={`categories/${RemoveWhiteSpace(item.category)}/cours/${RemoveWhiteSpace(item.name)}/chapiter/${RemoveWhiteSpace(item.name)}`}>{item.name}</a></h4>
+                                                                <h4><a href={`/categories/${RemoveWhiteSpace(item.category)}/cours/${RemoveWhiteSpace(item.$course)}/chapiter/${RemoveWhiteSpace(item.name)}`}>{item.name}</a></h4>
                                                                 <div>Categorie: {item.$category}</div>
                                                                 <div>Course : {item.course}</div>
                                                             </div>
@@ -230,9 +230,9 @@ export default function Search() {
                                                                 }
                                                                 {seachSection === 'chapter' ? 
                                                                     <>
-                                                                    <h4><a href={`categories/${RemoveWhiteSpace(item.$category)}/cours/${item.course}/chapiter/${RemoveWhiteSpace(item.name)}`}>{item.name}</a></h4>
-                                                                        <div>Categorie : {item.category}</div>
-                                                                        <div>Course : {item.course}</div>
+                                                                    <h4><a href={`categories/${RemoveWhiteSpace(item.$category)}/cours/${RemoveWhiteSpace(item.$course)}/chapiter/${RemoveWhiteSpace(item.name)}`}>{item.name}</a></h4>
+                                                                        <div>Categorie : {item.$category}</div>
+                                                                        <div>Course : {item.$course}</div>
                                                                     </>
                                                                     : null
                                                                 }

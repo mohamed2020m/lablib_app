@@ -5,7 +5,7 @@ import reportWebVitals from './reportWebVitals';
 import Layout from './components/Layout';
 import {AuthContextProvider} from './context/AuthContext';
 import './css/bootstrap.min.css'
-import './css/index.css';
+// import './css/index.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
