@@ -4,11 +4,12 @@ import Skeleton , {SkeletonTheme} from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 import {Navigate } from "react-router-dom";
 import {GetCategory, GetCategoryItem} from '../service/CategoryService';
+import {GetDetailsMe} from '../service/UserService';
+import {JoinCourse, AddToFavorite} from '../service/CourseService';
 import {findIdCategory, levelStr, RemoveWhiteSpace, fun} from '../helpers/helper';
-
-import img404 from '../data/Img404.png'
 import courseIcon from '../data/course-18.png'
-
+import { useAuthContext } from '../hooks/useAuthContext'
+import { useNavigate } from "react-router-dom";
 import NoPage from "./nopage";
 
 const Courses = () => {
@@ -18,6 +19,11 @@ const Courses = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [loaded, setLoaded] = useState(false)
     const [IsValidURL, setIsValidURL] = useState(true);
+    // const [isJoined, setIsJoine] = useState(false);
+    const [joinedCourses, setJoinedCourses] = useState([]);
+    const [favoriteCourses, setFavoriteCourses] = useState([]);
+    const { user} = useAuthContext();
+    const navigate = useNavigate();
 
     const url = 'https://lablib-api.herokuapp.com/api/v1/image';
     const Empty = "This is an empty description as there is no decription in the db, this will be replaced if the decription for this item is available in db."
@@ -64,10 +70,34 @@ const Courses = () => {
                 }
             }
             catch (err){
-                console.log(err);
-                // toast.current.show({ severity: 'error', summary: 'Failed', detail: err, life: 6000 });
+                console.warn(err);
             };
         }
+        async function fetchUserData(){
+            try{
+                if(user?.token){
+                    let res = await GetDetailsMe(user.token);
+                    if(res.ok){
+                        let d = await res.json();
+                        setJoinedCourses(d.courses.map(item => item.id));
+                        setFavoriteCourses(d.favorites);
+                        setIsLoading(false);
+                    }
+                    else{
+                        let err = await res.json();
+                        throw err[0].message
+                    }
+                }
+            }
+            catch(err){
+                console.warn("err: ", err);
+                if(err == 'Not Logged In'){
+                    navigate("/login")
+                }
+            }
+        }
+        fetchUserData();
+
         categories.length && fetchData(CategoryName);
         fun();
     }, [isLoading, loaded, IsValidURL]) 
@@ -76,6 +106,61 @@ const Courses = () => {
         return <NoPage/>
     }
 
+    const handleJoined = async (e) => {
+        let id = e.target.firstChild.value
+        try{
+            if(user){
+                let res = await JoinCourse(id, user?.token)
+                if (res.ok){
+                    let d = await res.json();
+                    // setIsJoine(true);
+                    // console.log("data: ", d);
+                    location.reload();
+                }
+                else{
+                    let r = await res.json()
+                    throw r[0].message;
+                }
+            }
+            else{
+                throw 'Not Logged In'
+            }
+        }
+        catch (err){
+            console.log("err: ", err);
+            if(err == 'Not Logged In'){
+                navigate('/login')
+            }
+        } 
+    }
+
+    const handleFavorite = async (e) => {
+        let id = e.target.parentNode.firstChild.value
+        console.log("id: ", id)
+        try{
+            if(user){
+                let res = await AddToFavorite(id, user?.token)
+                if (res.ok){
+                    let d = await res.json();
+                    // console.log("data: ", d);
+                    location.reload();
+                }
+                else{
+                    let r = await res.json()
+                    throw r[0].message;
+                }
+            }
+            else{
+                throw 'Not Logged In'
+            }
+        }
+        catch (err){
+            console.log("err: ", err);
+            if(err == 'Not Logged In'){
+                navigate('/login')
+            }
+        } 
+    }
     return(       
         <main>
             <nav aria-label="breadcrumb">
@@ -95,7 +180,15 @@ const Courses = () => {
                         courses.map((item) => {
                             return(
                                 <div className="ch_card" key={item.id}>
-                                    <div className="ch_card-image"><img src={item.image ? `${url}/${item.image}` : `${img404}`} width="100" alt="item.name" /></div>
+                                    <div className="ch_card-image">
+                                        { item.image ?
+                                            <img src={`${url}/${item.image}`} style={{width:'100px', height:'100px'}} alt={item.name} />
+                                        :
+                                            <div className="spinner-border text-light" role="status">
+                                                <span className="sr-only">Loading...</span>
+                                            </div>    
+                                        }
+                                    </div>
                                     <div className="ch_card-info">
                                         <div className="ch_card_title text-center my-3">
                                             <h3><a href={`/categories/${RemoveWhiteSpace(CategoryName)}/cours/${RemoveWhiteSpace(item.name)}`}>{item.name}</a></h3>
@@ -105,7 +198,19 @@ const Courses = () => {
                                         </div>
                                     </div>
                                     <div className="ch_card_body">
-                                        <a href={`/categories/${RemoveWhiteSpace(CategoryName)}/cours/${RemoveWhiteSpace(item.name)}`} className="btn border-dark ch_btn">Commencer le cours</a>
+                                        <div className="d-flex justify-content-around">
+                                            {!joinedCourses.includes(item.id) ?
+                                                <a type="button" onClick={handleJoined} className="btn border-dark ch_btn">
+                                                    <input type="text" hidden value={item.id} readOnly/>
+                                                    Rejoindre le cours
+                                                </a> 
+                                            : null }
+                                            {joinedCourses.includes(item.id) ? <a href={`/categories/${RemoveWhiteSpace(CategoryName)}/cours/${RemoveWhiteSpace(item.name)}`} className="btn border-dark ch_btn">Commencer le cours</a>: null}
+                                            <a type="button" onClick={handleFavorite} className={favoriteCourses.filter(fav => fav.id === item.id).length === 1 ? "btn border-info ch_btn hov_fav_btn" : "btn border-dark ch_btn"} >
+                                                <input type="text" hidden value={item.id} readOnly/>
+                                                <i className={favoriteCourses.filter(fav => fav.id === item.id).length === 1 ? "fa fa-heart text-info hov_fav_icon" : "fa fa-heart"}></i>
+                                            </a>
+                                        </div>
                                     </div>
                                     <div className="ch_card-footer">
                                         <span className="mx-2">Niveau: <strong className={`text-${levelStr(item.level)[0]}`}>{levelStr(item.level)[1]}</strong></span> 
@@ -140,7 +245,7 @@ const Courses = () => {
                         })
                     }
                 </div>
-                {!isLoading && courses && courses.length > 0 ?
+                {!isLoading && courses?.length > 0 ?
                     <div className="ch_pagination">
                         <li className="ch_page-item ch_previous-page ch_disable"><a className="ch_page-link" href="#">Prev</a></li>
                         <li className="ch_page-item ch_current-page ch_active"><a className="ch_page-link" href="#">1</a></li>

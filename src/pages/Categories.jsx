@@ -57,7 +57,15 @@ const Categories = () => {
                     categories.map((item) => {
                         return(
                             <div className="ch_card" key={item.id}>
-                                <div className="ch_card-image"><img src={item.image ? `${url}/${item.image}` : `${img404}`} width="100" alt="item.name" /></div>
+                                <div className="ch_card-image">
+                                    { item.image ?
+                                        <img src={`${url}/${item.image}`} style={{width:'128px', height:'128px'}} alt={item.name} />
+                                    :
+                                        <div className="spinner-border text-light" role="status">
+                                            <span className="sr-only">Loading...</span>
+                                        </div>    
+                                    }
+                                </div>
                                 <div className="ch_card-info">
                                     <div className="ch_card_title my-3">
                                         <h3><a href={`/categories/${RemoveWhiteSpace(item.name)}`}>{item.name}</a></h3>

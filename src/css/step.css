@@ -7,6 +7,77 @@
     position: relative;
     border-right: 1px solid rgb(153, 152, 152);
 }
+
+.content{
+    padding: 0 0 0 15px !important
+}
+.time_left{
+    display: flex;
+    align-items: center;
+}
+.tm-lf_text{
+    font-weight: bold;
+}
+@media screen and (max-width:700px) {
+    .StepContainer{
+        display: none;
+    }
+    .content{
+        padding:0 !important
+    }
+    .content > div{
+        box-shadow: none !important;
+    }
+    .App{
+        position: relative;
+    }
+    .ellipsis_btn{
+        display: block !important;
+        position: absolute;
+        bottom:5px;
+        right: 10px;
+        border:none;
+        border-radius: 50%;
+        background-color: #eee;
+        padding: 10px 20px;
+        z-index: 11;
+    }
+    
+    .ellipsis_btn > button{
+        border:none;
+    }
+    .time_left .tm-lf, .time_left h3{
+        font-size:14px !important;
+    }
+
+    .nav_steps{
+        position: absolute;
+        top:0;
+        left:0;
+        background-color: white;
+        box-shadow: 1px 1px 4px #333;
+        height: 100%;
+        width: 100%;
+        z-index: 10;
+    }
+
+    .step-content-Warraper .step_title > h2{
+        font-size: 20px !important;
+    }
+
+    .quill .ql-editor p span{
+        display: flex !important;
+        flex-wrap: wrap !important;
+    }
+    .quill pre{
+        overflow: auto !important;
+    }
+}
+
+.ellipsis_btn{
+    display: none;
+}
+
 .stepWrap{
     border:1px solid rgb(198, 197, 197);
     cursor: pointer;
@@ -15,6 +86,7 @@
     /* border:1px solid #0AB1CE; */
     box-shadow: 1px 1px 4px #333;
     font-weight: bold;
+    background-color: #eee;
 }
 
 .StepContainer:nth-child(2){
@@ -47,5 +119,9 @@ pre{
 }
 
 .quill .ql-editor p span{
-    display: inline !important;
+    display: inline-block !important;
+}
+
+.start_btn_step:hover{
+    opacity: 0.8;
 }

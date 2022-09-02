@@ -1,30 +1,29 @@
 import React,{useState} from 'react';
-import { useAuthContext } from '../hooks/useAuthContext'
-import { useNavigate, useLocation} from "react-router-dom";
 import Helmet from "react-helmet"
 import { Formik} from 'formik';
 import * as Yup from 'yup';
 import imgError from '../data/error.png'
 
 import logo from '../data/logo.png'
-import { LoginUser } from '../service/UserService';
+import { ForgetPasswordUser } from '../service/UserService';
 
-const Login = () => {
+const ForgetPassword = () => {
     const [error, setError] = useState("");
-    const { dispatch } = useAuthContext();
-    const navigate = useNavigate();
-    const location = useLocation();
-    
+
     return(
         <>
+            <Helmet>
+                <script>
+                    document.title = "Mot de pass Oublié"
+                </script>
+            </Helmet>
             <main className="container-fluid">
                 <div className="container">
                     <div className="signup-form">
                     <Formik
-                        initialValues={{email: "", password:""}}
+                        initialValues={{email: ""}}
                         validationSchema={Yup.object({
                                 email: Yup.string().required('E-mail requis'),
-                                password: Yup.string().required('Mot de pass requis'),
                             })
                         }
                         onSubmit={async (values, { setSubmitting, resetForm }) => {
@@ -41,19 +40,13 @@ const Login = () => {
                             };
                             
                             try{
-                                let res = await LoginUser(requestOptions);
+                                let res = await ForgetPasswordUser(requestOptions);
                                 if (res.ok){
                                     let d = await res.json();
-                                    // save the user to local storage
-                                    localStorage.setItem('user', JSON.stringify(d));
-                                    // update the auth context
-                                    dispatch({type: 'LOGIN', payload: d});
                                     resetForm();
-                                    const origin = location.state?.from?.pathname || '/home';
-                                    navigate(origin);
+                                    console.log("sent")
                                 }
                                 else{
-                                    if(Array.isArray(res) && res.length === 0) return "error";
                                     let r = await res.json()
                                     throw r[0].message;
                                 }
@@ -75,14 +68,11 @@ const Login = () => {
                                     <img src={imgError} alt="Error" width="30px" height="30px"/>{error}
                                 </div>
                                 }
-                                <h2 className="text-center">Log in</h2>
-                                <p className="text-center">Connectez-vous avec votre compte de réseau social</p>
-                                {/* <div className="social-btn text-center">
-                                    <a href="#" className="btn btn-primary btn-lg"><i className="icon-facebook"></i> Facebook</a>
-                                    <a href="#" className="btn btn-info btn-lg"><i className="icon-twitter"></i> Twitter</a>
-                                    <a href="#" className="btn btn-danger btn-lg"><i className="icon-google"></i> Google</a>
-                                </div>
-                                <div className="or-seperator"><b>ou</b></div> */}
+                                <h2 className="text-center">Mot de passe oublié</h2>
+                                <p className="text-center">Avez-vous oublié votre mot de passe ? pas de soucis 
+                                    tapez simplement votre e-mail et vous recevrez un e-mail de notre part pour 
+                                    renouveler votre mot de passecial
+                                </p>
                                 <div className="form-group">
                                     <input 
                                         id="email" 
@@ -95,37 +85,54 @@ const Login = () => {
                                         <div className="text-danger">{formik.errors.email}</div>
                                     ) : null}
                                 </div>
-                                <div className="form-group">
-                                    <input 
-                                        type="password" 
-                                        className="form-control" 
-                                        id="password" 
-                                        placeholder="Mot de passe" 
-                                        {...formik.getFieldProps('password')} 
-                                    />
-                                    {formik.touched.password && formik.errors.password ? (
-                                        <div className="text-danger">{formik.errors.password}</div>
-                                    ) : null}
-                                </div>
-                                
+
                                 <div className="form-group d-flex justify-content-center">
+                                    {
+                                    formik.values.email ?
                                     <button 
                                         type="submit" 
                                         className="btn btn-primary btn-lg"
+                                        data-toggle="modal" data-target="#exampleModalCenter"
                                     >
-                                        {formik.isSubmitting ? "Loging In..." : "Log In"}
+                                        {formik.isSubmitting ? "Rréinitialiser le mot de passe..." : "Réinitialiser le mot de passe"}
                                     </button>
+                                    :
+                                    <button 
+                                        type="submit"
+                                        className="btn btn-primary btn-lg"
+                                        disabled 
+                                    >
+                                        Réinitialiser le mot de passe
+                                    </button>
+                                    }
                                 </div>
+                                <div className="hint-text"><a className="text-primary ml-2" href="/login">Log in</a></div>
                                 <div className="hint-text">Créer un compte<a className="text-primary ml-2" href="/register">Sign Up</a></div>
                             </form>
                         )}
                         </Formik>
-                        <div className="hint-text"><a className="text-primary" href="/forgetpassword">Mot de passe oublié?</a></div>
                     </div>
                 </div>
             </main>
+            <div className="modal fade" id="exampleModalCenter" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div className="modal-dialog modal-dialog-centered" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="exampleModalCenterTitle">Mot de passe oublié</h5>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="d-flex justify-content-center">
+                                <h4 className='text-success'>vérifiez votre messagerie.</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </>
     )
 }
 
-export default Login;
+export default ForgetPassword;

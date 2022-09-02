@@ -1,79 +1,269 @@
+import React, { useEffect, useState } from 'react';
+import { useAuthContext } from '../hooks/useAuthContext'
+import {GetDetailsMe} from '../service/UserService';
+import {ExistCourse, RemoveFromFavorite} from '../service/CourseService';
+import Helmet from "react-helmet"
+import { useNavigate } from "react-router-dom";
+const url = "https://lablib-api.herokuapp.com/api/v1/image";
+import '../css/profile.css'
+
 const Profile = () => {
+    const { user } = useAuthContext();
+    const [userDetails, setUseDetails] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        async function fetchAvatar(){
+            try{
+                if(user?.token){
+                    let res = await GetDetailsMe(user.token);
+                    if(res.ok){
+                        let d = await res.json();
+                        setUseDetails(d);
+                        setIsLoading(false);
+                    }
+                    else{
+                        let err = await res.json();
+                        throw err[0].message
+                    }
+                }
+            }
+            catch(err){
+                console.warn("err: ", err);
+                if(err == 'Not Logged In'){
+                    navigate('/login')
+                }
+            }
+        }
+        fetchAvatar();
+    }, [isLoading])
+
+    const handleExistCourse = async (e) => {
+        let id = e.target.parentNode.firstChild.value;
+        try{
+            if(user){
+                let res = await ExistCourse(id, user?.token)
+                if (res.ok){
+                    let d = await res.json();
+                    location.reload();
+                }
+                else{
+                    let r = await res.json()
+                    throw r[0].message;
+                }
+            }
+            else{
+                throw 'Not Logged In'
+            }
+        }
+        catch (err){
+            console.log("err: ", err);
+            if(err == 'Not Logged In'){
+                navigate('/login')
+            }
+        } 
+    }
+
+    const handleRemoveFavorite = async(e) => {
+        let id = e.target.parentNode.firstChild.value;
+        try{
+            if(user){
+                let res = await RemoveFromFavorite(id, user?.token)
+                if (res.ok){
+                    let d = await res.json();
+                    location.reload();
+                }
+                else{
+                    let r = await res.json()
+                    throw r[0].message;
+                }
+            }
+            else{
+                throw 'Not Logged In'
+            }
+        }
+        catch (err){
+            console.log("err: ", err);
+            if(err == 'Not Logged In'){
+                navigate('/login')
+            }
+        } 
+    }
     return(
         <>
-            This is profile
+            <Helmet>
+                <script>
+                    document.title = "Mon Profile"
+                </script>
+            </Helmet>
+            <nav aria-label="breadcrumb">
+                <ol className="breadcrumb">
+                    <li className="breadcrumb-item"><i className="icon-home mr-2"></i><a href="/home">Accueil</a></li>
+                    <li className="breadcrumb-item active" aria-current="page">Mon Profile</li>
+                </ol>
+            </nav>
+            {
+            !isLoading ?
+            <div className="container my-3">
+                <div className="main-body">
+                    <div className="row gutters-sm">
+                        <div className="col-md-4 mb-3">
+                            <div className="card">
+                                <div className="card-body">
+                                    <div className="d-flex flex-column align-items-center text-center">
+                                        <img src={`${url}/${userDetails.image}`} alt="avatar" className="rounded-circle border" width="100" />
+                                        <div className="mt-3">
+                                            <h4>{`${userDetails.firstname} ${userDetails.lastname}`}</h4>
+                                            <p className="text-secondary mb-1">{userDetails.description}</p>
+                                            <p className="text-muted font-size-sm">{userDetails.country}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="col-md-8">
+                            <div className="card mb-3">
+                                <div className="card-body">
+                                    <div className="row">
+                                        <div className="col-sm-3">
+                                            <h6 className="mb-0">Le Nom Complète</h6>
+                                        </div>
+                                        <div className="col-sm-9 text-secondary">
+                                            {`${userDetails.firstname} ${userDetails.lastname}`}
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div className="row">
+                                        <div className="col-sm-3">
+                                            <h6 className="mb-0">E-mail</h6>
+                                        </div>
+                                        <div className="col-sm-9 text-secondary">
+                                            {`${userDetails.email}`}
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div className="row">
+                                        <div className="col-sm-3">
+                                        <h6 className="mb-0">Pays</h6>
+                                        </div>
+                                        <div className="col-sm-9 text-secondary">
+                                            {userDetails.country}
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div className="row">
+                                        <div className="col-sm-12">
+                                            <a className="btn btn-info" href="/settings">Modifier</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="row gutters-sm">
+                        <div className={userDetails.length  && userDetails.courses.length ? 'col-sm-6 mb-3 courses_jed' : 'col-sm-6 mb-3'}>
+                            <div className="card">
+                                <div className="card-body">
+                                    <h6 className="d-flex align-items-center mb-3"><i className="material-icons text-info mr-2">Cours</i>rejoints</h6>
+                                    {
+                                        userDetails.courses.length ?
+                                        <div className='joined_courses'>
+                                            {userDetails.courses.map(item => {
+                                                return(
+                                                    <div className="d-flex justify-content-between align-items-center" key={item.id}>
+                                                        <div className="d-flex align-items-center">
+                                                                <div>
+                                                                    <img src={`${url}/${item.image}`} alt="course_img" className="rounded-circle border" width="50" height="50"/>
+                                                                </div>
+                                                                <div className="">
+                                                                    <a href={`/categories/${item.category}/cours/${item.name}`}>
+                                                                        <div className='mx-2'>
+                                                                            {item.name}  
+                                                                        </div>
+                                                                    </a>
+                                                                    <div className='mx-2'>
+                                                                        <p style={{fontSize: '12px'}}>{item.description}</p>  
+                                                                    </div>
+                                                                </div>
+                                                            <hr/>
+                                                        </div>
+                                                        <div className="p-0 m-0">
+                                                            <button onClick={handleExistCourse} className="border-0 bg-white">
+                                                                <input type="text" value={item.id} hidden readOnly />
+                                                                <i className="fa fa-trash text-danger bg-white"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })
+                                            }
+                                        </div>
+                                        :
+                                        <div>
+                                            Vous n'avez encore rejoint aucun cours!
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div className={userDetails.length && userDetails.favorites.length ? 'col-sm-6 mb-3 courses_jed' : 'col-sm-6 mb-3'}>
+                            <div className="card">
+                                <div className="card-body">
+                                    <h6 className="d-flex align-items-center mb-3"><i className="material-icons text-info mr-2">Cours</i>favoris</h6>
+                                    {
+                                    userDetails.favorites.length ?
+                                        <div className='joined_courses'>
+                                            {userDetails.favorites.map(item => {
+                                                return(
+                                                    <div className="d-flex justify-content-between align-items-center" key={item.id}>
+                                                        <div className="d-flex align-items-center">
+                                                                <div>
+                                                                    <img src={`${url}/${item.image}`} alt="course_img" className="rounded-circle border" width="50" height="50"/>
+                                                                </div>
+                                                                <div className="">
+                                                                    <a href={`/categories/${item.category}/cours/${item.name}`}>
+                                                                        <div className='mx-2'>
+                                                                            {item.name}  
+                                                                        </div>
+                                                                    </a>
+                                                                    <div className='mx-2'>
+                                                                        <p style={{fontSize: '12px'}}>{item.description}</p>  
+                                                                    </div>
+                                                                </div>
+                                                            <hr/>
+                                                        </div>
+                                                        <div className="p-0 m-0">
+                                                            <button onClick={handleRemoveFavorite} className="border-0 bg-white">
+                                                                <input type="text" value={item.id} hidden readOnly />
+                                                                <i className="fa fa-trash text-danger bg-white"></i>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })
+                                            }
+                                        </div>
+                                        :
+                                        <div>
+                                            Vous n'avez pas encore ajouté de cours à votre liste de favoris
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            :
+            <div className='d-flex justify-content-center align-items-center' style={{height: "100vh"}}>
+                <div className="spinner-grow" style={{width: "3rem", height: "3rem"}} role="status">
+                    <span className="sr-only">Loading...</span>
+                </div>
+            </div>
+            }
         </>
     )
 }
 
 export default Profile
-
-// import React from 'react';
-// import { MdOutlineCancel } from 'react-icons/md';
-// import { Link } from 'react-router-dom';
-
-// import { Button } from '.';
-// import { userProfileData } from '../data/dummy';
-// import avatar from '../data/avatar1.png';
-
-// const UserProfile = () => {
-
-//     return (
-//         <div className="nav-item absolute right-1 top-16 bg-white dark:bg-[#42464D] p-8 rounded-lg w-96 shadow-2xl">
-//         <div className="flex justify-between items-center">
-//             <p className="font-semibold text-lg dark:text-gray-200">Votre Profile</p>
-//             <Button
-//                 icon={<MdOutlineCancel />}
-//                 color="rgb(153, 171, 180)"
-//                 bgHoverColor="light-gray"
-//                 size="2xl"
-//                 borderRadius="50%"
-//             />
-//         </div>
-//         <div className="flex gap-5 items-center mt-6 border-color border-b-1 pb-6">
-//             <img
-//             className="rounded-full h-19 w-24"
-//             src={avatar}
-//             alt="user-profile"
-//             />
-//             <div>
-//             <p className="font-semibold text-xl dark:text-gray-200"> Leeuw </p>
-//             <p className="text-gray-500 text-sm dark:text-gray-400">  Administrateur   </p>
-//             <p className="text-gray-500 text-sm font-semibold dark:text-gray-400"> leeuw@admin.me </p>
-//             </div>
-//         </div>
-//         <div>
-//             {userProfileData.map((item, index) => (
-//             <div key={index} className="flex gap-5 border-b-1 border-color p-4 hover:bg-light-gray cursor-pointer  dark:hover:bg-[#42464D]">
-//                 <button
-//                 type="button"
-//                 style={{ color: item.iconColor, backgroundColor: item.iconBg }}
-//                 className=" text-xl rounded-lg p-3 hover:bg-light-gray"
-//                 >
-//                 {item.icon}
-//                 </button>
-
-//                 <Link to={item.to}>
-//                 <div>
-//                 <p className="font-semibold dark:text-gray-200 ">{item.title}</p>
-//                 <p className="text-gray-500 text-sm dark:text-gray-400"> {item.desc} </p>
-//                 </div>
-//                 </Link>
-//             </div>
-//             ))}
-//         </div>
-//         <div className="mt-5">
-//             <Button
-//             color="white"
-//             bgColor="red"
-//             text="Logout"
-//             borderRadius="10px"
-//             width="full"
-//             />
-//         </div>
-//         </div>
-
-//     );
-// };
-
-// export default UserProfile;

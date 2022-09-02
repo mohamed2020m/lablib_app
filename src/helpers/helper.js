@@ -17,6 +17,7 @@ export const findIdCategory = (name, categories) => {
 
 export const findIdCourse = (name, courses) => {
     const _course =  courses.filter(item => (
+
         RemoveWhiteSpace(item.name.toLowerCase()) === name
     ));
     if(_course.length) return _course[0].id

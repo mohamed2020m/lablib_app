@@ -2,17 +2,20 @@ import React, {useEffect, useState} from 'react';
 import Search from '../components/Search';
 import {GetLatestChapiters, GetLatestLabs, GetSuggestedCourses} from '../service/LatestService';
 import {RemoveWhiteSpace, msToTime, DateToString} from '../helpers/helper';
-
+import { useAuthContext } from '../hooks/useAuthContext'
 import '../css/Home.css';
+import {Navigate} from 'react-router-dom';
+
 
 const url = "https://lablib-api.herokuapp.com/api/v1/image"
 const Dashboard = () => {
-    // const [suggestedCourses, setSuggestedCourses] = useState([]);
+    const [suggestedCourses, setSuggestedCourses] = useState([]);
     const [lastesChapiters, setLatestChapiters] = useState([]);
     const [lastesLabs, setLatestLabs] = useState([]);
     const [isLoadingChapters, setIsLoadingChapters] = useState(true);
     const [isLoadingLabs, setIsLoadingLabs] = useState(true);
-    // const [isLoadingSuggested, setIsLoadingSuggested] = useState(true);
+    const [isLoadingSuggested, setIsLoadingSuggested] = useState(true);
+    const { user } = useAuthContext();
 
     useEffect(() => {
 
@@ -41,26 +44,34 @@ const Dashboard = () => {
         });
         
         //getting the suggested courses
-        // async function fetchSuggestedCourses(){
-        //     try{
-        //         let res = await GetSuggestedCourses();
-        //         if(res.ok){
-        //             let data = await res.json();
-        //             setSuggestedCourses(data);
-        //             setIsLoadingSuggested(false);
-        //         }
-        //         else{
-        //             let err = await res.json();
-        //             setIsLoadingSuggested(false);
-        //             throw err[0].message;
-        //         }
-        //     }
-        //     catch (err){
-        //         console.log(err);
-        //     };
-        // }
+        async function fetchSuggestedCourses(){
+            try{
+                if(user){
+                    let res = await GetSuggestedCourses(user.token);
+                    if(res.ok){
+                        let data = await res.json();
+                        setSuggestedCourses(data);
+                        setIsLoadingSuggested(false);
+                    }
+                    else{
+                        let err = await res.json();
+                        setIsLoadingSuggested(false);
+                        throw err[0].message;
+                    }
+                }
+                else{
+                    throw 'Not Logged In'
+                }
+            }
+            catch (err){
+                console.warn(err);
+                if(err == 'Not Logged In'){
+                    return <Navigate to="/login" replace/>
+                }
+            };
+        }
 
-        // fetchSuggestedCourses();
+        fetchSuggestedCourses();
 
         // getting the latest chapiters
         async function fetchLatestChapters(){
@@ -117,14 +128,22 @@ const Dashboard = () => {
                 <Search />
             </div>
             
-            
-            {/* <div className="container mt-5">
-                <h2 className="der_h2">Derniers <span className="derniers">Chapitres</span></h2>
-                <hr />
-
+            <div className={suggestedCourses.length ? "container mt-5" : "container"}>
+                { suggestedCourses.length ?
+                    <>  
+                        <h2 className="der_h2"><i className="fa fa-star text-info"></i> Recommandation</h2>
+                        <hr />
+                    </>
+                    :
+                    null
+                }
                 {
                     isLoadingSuggested ? 
-                    <div className="d-flex justify-content-center">Loading...</div>
+                    <div className='d-flex justify-content-center align-items-center' style={{height: "100vh"}}>
+                        <div className="spinner-grow" style={{width: "3rem", height: "3rem"}} role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    </div>
                     :
                     <div className="owl-carousel owl-theme mt-5">
                         {
@@ -162,9 +181,7 @@ const Dashboard = () => {
                         }
                     </div>
                 }
-            </div> */}
-
-
+            </div>
 
             <div className="container mt-5">
                 <h2 className="der_h2">Derniers <span className="derniers">Chapitres</span></h2>
@@ -232,7 +249,7 @@ const Dashboard = () => {
                                             </div>
                                             <div className="home_card_title">
                                                 <h3>
-                                                    <a href={`/categories/${RemoveWhiteSpace(item.$category)}/cours/${RemoveWhiteSpace(item.$course)}/chapiter/${RemoveWhiteSpace(item.$chapter)}/labs/${item.name}`}>
+                                                    <a href={`/categories/${RemoveWhiteSpace(item.$category)}/cours/${RemoveWhiteSpace(item.$course)}/chapiter/${RemoveWhiteSpace(item.$chapter)}/Lab/${item.name}`}>
                                                         {item.name}
                                                     </a>
                                                 </h3>
@@ -244,7 +261,7 @@ const Dashboard = () => {
                                                 {item.description}
                                             </div>
                                             <div className="ch_card_body">
-                                                <a href={`/categories/${RemoveWhiteSpace(item.$category)}/cours/${RemoveWhiteSpace(item.$course)}/chapiter/${RemoveWhiteSpace(item.$chapter)}/labs/${item.name}`} className="btn border-dark ch_btn">Commencer le Lab</a>
+                                                <a href={`/categories/${RemoveWhiteSpace(item.$category)}/cours/${RemoveWhiteSpace(item.$course)}/chapiter/${RemoveWhiteSpace(item.$chapter)}/Lab/${item.name}`} className="btn border-dark ch_btn">Commencer le Lab</a>
                                             </div>
                                             <div className="name">
                                                 <cite>{DateToString(item.createdAt)}</cite>

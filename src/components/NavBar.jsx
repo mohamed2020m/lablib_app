@@ -12,6 +12,8 @@ const Header = () => {
     const [courses, setCourses] = useState([]);
     const [id, setId] = useState("");
     const {user} = useAuthContext();
+    const [isErrorCategory, setErrorCategory] = useState(false);
+    const [isErrorCourse, setErrorCourses] = useState(false);
 
     useEffect(() => {
         async function fetchCategories(){
@@ -27,8 +29,8 @@ const Header = () => {
                 }
             }
             catch (err){
-                console.log(err);
-                // toast.current.show({ severity: 'error', summary: 'Failed', detail: err, life: 6000 });
+                console.warn(err);
+                setErrorCategory(true)
             };
         }
 
@@ -45,7 +47,8 @@ const Header = () => {
                 }
             }
             catch (err){
-                console.log(err);
+                console.warn(err);
+                setErrorCourses(true)
             };
         }
 
@@ -53,7 +56,7 @@ const Header = () => {
         
         id &&  fetchCourses();
 
-    }, [id]) 
+    }, [id, isErrorCategory, isErrorCourse]) 
 
 
     return (
@@ -64,7 +67,7 @@ const Header = () => {
                     <div className="navbar">
                         <i className='bx bx-menu'></i>
                         <div className="logo">
-                            <a href={user ? "/home" : "/"}>
+                            <a href={user?.token ? "/home" : "/"}>
                                 <img src={logo} width="48" height="45" alt="logo" />
                             </a>
                         </div>
@@ -72,7 +75,7 @@ const Header = () => {
                         <div className="nav-links">
                             <div className="row align-items-center sidebar-logo">
                                 <div className='col-10 d-flex justify-content-center'>
-                                    <a href={user ? "/home" : "/"}>
+                                    <a href={user?.token ? "/home" : "/"}>
                                         <img src={logo} width="60" height="60" alt="logo" />
                                     </a>
                                 </div>
@@ -81,35 +84,57 @@ const Header = () => {
                                 </div>
                             </div>
                             <ul className="links">
-                                <li><a href={user ? "/home" : "/"} ><i className="icon-home"></i> Accueil</a></li>
-                                { user &&
+                                <li><a href={user?.token ? "/home" : "/"} ><i className="icon-home"></i> Accueil</a></li>
+                                { user?.token &&
                                 <li>
                                     <a href="/categories"><i className="fa fa-list-alt mr-1"></i>Cours</a>
                                     <i className='bx bxs-chevron-down categories-arrow arrow'></i>
-                                    {categories.length ?
-                                    <ul className="categories-sub-menu sub-menu">
-                                        {categories.map((category) => (
-                                            <li className="more" key={category.id}>
-                                                <span>
-                                                    <a href={`/categories/${RemoveWhiteSpace(category.name)}`} onMouseOver={() => setId(category.id)} onClick={() => setId(category.id)}>
-                                                        {category.name}
-                                                        <i className='bx bxs-chevron-right arrow more-arrow'></i>
-                                                    </a>
-                                                </span>
-                                                <ul className="more-sub-menu sub-menu">
-                                                    {id ? 
-                                                        courses.map((course) => (
-                                                            <li key={course.id}>
-                                                                <a href={`/categories/${RemoveWhiteSpace(category.name)}/cours/${RemoveWhiteSpace(course.name)}`}>{course.name}</a>
-                                                            </li>
-                                                        ))
-                                                        : null
-                                                    }
-                                                </ul>
+                                    {
+                                        isErrorCategory ? 
+                                        <ul className="categories-sub-menu sub-menu">
+                                            <li>
+                                                <span>Oops, Sth went wrong</span>
                                             </li>
-                                        ))}
-                                    </ul>
-                                    : null
+                                        </ul>
+                                        :
+                                        <>
+                                        {categories.length ?
+                                        <ul className="categories-sub-menu sub-menu">
+                                            {categories.map((category) => (
+                                                <li className="more" key={category.id}>
+                                                    <span>
+                                                        <a href={`/categories/${RemoveWhiteSpace(category.name)}`} onMouseOver={() => setId(category.id)} onClick={() => setId(category.id)}>
+                                                            {category.name}
+                                                            <i className='bx bxs-chevron-right arrow more-arrow'></i>
+                                                        </a>
+                                                    </span>
+                                                    {
+                                                        isErrorCourse ?
+                                                            <ul className="more-sub-menu sub-menu">
+                                                                <li>
+                                                                    <span>Sth went wrong</span>
+                                                                </li>
+                                                            </ul>
+                                                        :
+                                                        <>
+                                                            <ul className="more-sub-menu sub-menu">
+                                                                {id ? 
+                                                                    courses.map((course) => (
+                                                                        <li key={course.id}>
+                                                                            <a href={`/categories/${RemoveWhiteSpace(category.name)}/cours/${RemoveWhiteSpace(course.name)}`}>{course.name}</a>
+                                                                        </li>
+                                                                    ))
+                                                                    : null
+                                                                }
+                                                            </ul>
+                                                        </>
+                                                    }
+                                                </li>
+                                            ))}
+                                        </ul>
+                                        : null
+                                        }
+                                        </>
                                     }
                                 </li>
                                 }
@@ -120,7 +145,7 @@ const Header = () => {
                         
                         <div>
                             <div className="d-flex">
-                                {!user ?
+                                {!user?.token ?
                                 <div className='d-flex singUpLoginBtns'>
                                     <a 
                                         className="ml-2 py-2 px-3 text-dark login_btn" 

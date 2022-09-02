@@ -70,17 +70,23 @@ $(function() {
 	let menuOpenBtn = document.querySelector(".navbar .bx-menu");
 	let menuCloseBtn = document.querySelector(".nav-links .bx-x");
 	
-	menuOpenBtn.onclick = function() {
-		navLinks.style.left = "0";
+	if(menuOpenBtn){
+		menuOpenBtn.onclick = function() {
+			navLinks.style.left = "0";
+		}
 	}
-	menuCloseBtn.onclick = function() {
-		navLinks.style.left = "-100%";
+	if(menuCloseBtn){
+		menuCloseBtn.onclick = function() {
+			navLinks.style.left = "-100%";
+		}
 	}
 
 	// sidebar submenu open close js code
 	let categoriesArrow = document.querySelector(".categories-arrow");
-	categoriesArrow.onclick = function() {
-		navLinks.classList.toggle("show1");
+	if(categoriesArrow){
+		categoriesArrow.onclick = function() {
+			navLinks.classList.toggle("show1");
+		}
 	}
 	// let moreArrow = document.querySelector(".mmore-arrow");
 	// console.log("moreArrow: ", moreArrow);

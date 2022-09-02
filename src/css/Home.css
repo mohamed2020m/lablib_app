@@ -160,3 +160,28 @@
     width:250px;
 }
 /* === End main ::: index === */
+
+@media screen and (max-width: 700px){
+    .mb_wrap{
+        display:flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .mb_wrap_desp h3{
+        font-size: 24px;
+    }
+    .mb_wrap_desp h4{
+        font-size: 18px;
+    }
+    .mb_wrap_desp h3,.mb_wrap_desp h4 {
+        text-align: center;
+    }
+    .down_desc_mob{
+        font-size: 18px;
+    }
+    .phone_screenshot{
+        width:100px;
+        height: 200px;
+    }
+}

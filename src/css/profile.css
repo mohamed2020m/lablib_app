@@ -1,0 +1,22 @@
+.joined_courses >div {
+    margin: 10px 4px;
+    padding:8px 10px;
+}
+
+.joined_courses a{
+    color: black !important;
+}
+
+.joined_courses a:hover{
+    color: #09a19c !important;
+}
+
+.joined_courses >div:hover {
+    background-color: #eee;
+    border-radius: 10px;
+}
+
+.courses_jed{
+    height:300px;
+    overflow:auto;
+}

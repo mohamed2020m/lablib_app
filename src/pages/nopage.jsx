@@ -7,7 +7,7 @@ export default function NoPage(){
         <div>
             <Helmet>
                 <script>
-                    document.title = "Not Found!"
+                    document.title = "Pas trouvé!"
                 </script>
             </Helmet>
             <div className='d-flex justify-content-center align-content-center p-3 m-3'>

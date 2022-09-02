@@ -62,10 +62,9 @@ export default function Search() {
             }
         }
         catch (err){
-            console.log("err: ", err);        
+            console.warn("err: ", err);        
         } 
     }
-
     return (
         <>
             <form className="form-inline form_search_container">
@@ -120,7 +119,7 @@ export default function Search() {
                             
                             : 
                             <>
-                                {seachSection === 'tous' && searchBoxResult && Object.keys(searchBoxResult).length ? 
+                                {seachSection === 'tous' && searchBoxResult && searchBoxResult.categories.length && searchBoxResult.courses.length && searchBoxResult.chapters.length ? 
                                     <>
                                         <div>
                                             {searchBoxResult.categories.length ? <h3>Categories</h3> : null}
@@ -182,8 +181,8 @@ export default function Search() {
                                                         <div className='col-9 d-flex align-items-center'>
                                                             <div>
                                                                 <h4><a href={`/categories/${RemoveWhiteSpace(item.category)}/cours/${RemoveWhiteSpace(item.$course)}/chapiter/${RemoveWhiteSpace(item.name)}`}>{item.name}</a></h4>
-                                                                <div>Categorie: {item.$category}</div>
-                                                                <div>Course : {item.course}</div>
+                                                                <div>Categorie: {item.category}</div>
+                                                                <div>Course : {item.$course}</div>
                                                             </div>
                                                         </div>                                                
                                                     </div>
@@ -224,14 +223,14 @@ export default function Search() {
                                                                 {seachSection === 'course' ? 
                                                                     <>
                                                                     <h4><a href={`/categories/${RemoveWhiteSpace(item.$category)}/cours/${RemoveWhiteSpace(item.name)}`}>{item.name}</a></h4>
-                                                                    <div>Categorie : {item.category}</div>
+                                                                    <div>Categorie : {item.$category}</div>
                                                                     </>
                                                                     : null
                                                                 }
                                                                 {seachSection === 'chapter' ? 
                                                                     <>
                                                                     <h4><a href={`categories/${RemoveWhiteSpace(item.$category)}/cours/${RemoveWhiteSpace(item.$course)}/chapiter/${RemoveWhiteSpace(item.name)}`}>{item.name}</a></h4>
-                                                                        <div>Categorie : {item.$category}</div>
+                                                                        <div>Categorie : {item.category}</div>
                                                                         <div>Course : {item.$course}</div>
                                                                     </>
                                                                     : null
@@ -247,7 +246,7 @@ export default function Search() {
                                         </div>
                                     </>
                                 : 
-                                    seachSection !== 'tous' &&"Aucun résultat trouvé" 
+                                    seachSection !== 'tous' && "Aucun résultat trouvé" 
                                 }
                             </>
                         }

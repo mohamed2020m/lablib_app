@@ -18,3 +18,7 @@ export async function PutLabs(id, modifieLabs) {
 export async function DelLabs(id) {
     return await fetch(`https://lablib-api.herokuapp.com/api/v1/lab/${id}`,  { method: 'DELETE'});
 }
+
+export async function MarkLabs(id) {
+    return await fetch(`https://lablib-api.herokuapp.com/api/v1/lab/${id}/mark`,  { method: 'POST'});
+}

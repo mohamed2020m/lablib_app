@@ -431,10 +431,11 @@
     right: 10px;
     border:none !important;
     border-radius: 50% !important;
-    padding:5px 15px !important;
+    padding:5px 10px !important;
     z-index: 1;
 }
 
 .close_avatar_btn:hover{
     background-color: #eee !important;
+    z-index: 20;
 }

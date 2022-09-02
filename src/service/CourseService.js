@@ -25,3 +25,39 @@ export async function PutCourse(id, modifieCourse) {
 export async function DelCourse(id) {
     return await fetch(`https://lablib-api.herokuapp.com/api/v1/course/${id}`,  { method: 'DELETE'});
 }
+
+export async function JoinCourse(id, token) {
+    return await fetch(`https://lablib-api.herokuapp.com/api/v1/course/${id}/join`,  {
+        method:'POST',
+        headers: {
+            'Authorization': `Bearer ${token}` 
+        }
+    });
+}
+
+export async function ExistCourse(id, token) {
+    return await fetch(`https://lablib-api.herokuapp.com/api/v1/course/${id}/join`,  {
+        method:'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}` 
+        }
+    });
+}
+
+export async function AddToFavorite(id, token) {
+    return await fetch(`https://lablib-api.herokuapp.com/api/v1/course/${id}/save`,  {
+        method:'POST',
+        headers: {
+            'Authorization': `Bearer ${token}` 
+        }
+    });
+}
+
+export async function RemoveFromFavorite(id, token) {
+    return await fetch(`https://lablib-api.herokuapp.com/api/v1/course/${id}/save`,  {
+        method:'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}` 
+        }
+    });
+}

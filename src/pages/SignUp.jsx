@@ -1,28 +1,37 @@
-import React,{useState} from 'react';
-import { useAuthContext } from '../hooks/useAuthContext'
+import React,{useState, useMemo } from 'react';
 import Helmet from "react-helmet"
-import { Formik} from 'formik';
+import { Formik, Field} from 'formik';
 import * as Yup from 'yup';
 import imgError from '../data/error.png'
 import imgSuccess from '../data/ok.png'
 import { PostUser } from '../service/UserService';
 import logo from '../data/logo.png'
+import countryList from 'react-select-country-list'
 
+// console.log(countryList().native().getLabel('FR'))
 const SignUp = () => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState(false);
+    const countries = useMemo(() => countryList().native().getData('FR'), [])
+    // console.log('countries: ', countries);
 
     return(
         <>
+            <Helmet>
+                <script>
+                    document.title = "Register"
+                </script>
+            </Helmet>
             <main className="container-fluid">
                 <div className="container">
                     <div className="signup-form">
                         <Formik
-                        initialValues={{ firstname: '', lastname: '', email: "", password:"", confirm_password:"", check:false}}
+                        initialValues={{ firstname: '', lastname: '', email: "", password:"", confirm_password:"", country: '', check:false}}
                         validationSchema={Yup.object({
                             firstname: Yup.string().required('Prénom requis'),
                             lastname: Yup.string().required('Nom requis'),
                             email: Yup.string().required('E-mail requis'),
+                            country: Yup.string().required('pays requis'),
                             password: Yup.string().required('Mot de pass requis'),
                             confirm_password: Yup.string().when("password", {
                                 is: val => (val && val.length > 0 ? true : false),
@@ -53,7 +62,6 @@ const SignUp = () => {
                                 if (res.ok){
                                     let d = await res.json();
                                     // save the user to local storage
-                                    localStorage.setItem('user', JSON.stringify(d));
                                     setSuccess(true);
                                     resetForm();
                                 }
@@ -174,6 +182,21 @@ const SignUp = () => {
                                         <div className="text-danger">{formik.errors.check}</div>
                                     ) : null}
                                 </div> */}
+                                <div className="form-group">
+                                    <Field 
+                                        id="cacountrytegory" name="country" as="select" 
+                                        value={formik.values.country ? formik.values.country : "Sélectionnez votre pays"} onChange={(e) => {formik.setFieldValue("country", e.target.value)}}
+                                        className="form-control" 
+                                    >
+                                        <option disabled>Sélectionnez votre pays</option>
+                                        {countries.map((item) => (
+                                            <option key={item.value} value={item.label}>{item.label}</option>
+                                        ))}
+                                    </Field>
+                                    {formik.touched.country && formik.errors.country ? (
+                                        <div className="text-danger">{formik.errors.country}</div>
+                                    ) : null}
+                                </div>
                                 <div className="form-group d-flex justify-content-center">
                                     <button 
                                         type="submit" 

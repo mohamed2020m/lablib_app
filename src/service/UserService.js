@@ -21,4 +21,12 @@ export async function LoginUser(userData){
 export async function DelUser(id) {
     return await fetch(`https://lablib-api.herokuapp.com/api/v1/user/${id}`,  { method: 'DELETE'});
 }
-    
+ 
+
+export async function EditUser(requestOptions) {
+    return await fetch(`https://lablib-api.herokuapp.com/api/v1/user/me`, requestOptions );
+}
+
+export async function ForgetPasswordUser(requestOptions) {
+    return await fetch(`https://lablib-api.herokuapp.com/api/v1/user/resetpassword`, requestOptions );
+}

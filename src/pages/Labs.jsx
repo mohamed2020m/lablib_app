@@ -7,13 +7,17 @@ import {GetChapiter,GetChapiters, GetChapiterItem} from '../service/ChapiterServ
 import {findIdChapiter, formatDate, RemoveWhiteSpace, msToTime} from '../helpers/helper';
 import NoPage from "./nopage";
 
+import img404 from '../data/Img404.png'
 import courseIcon from '../data/course-18.png'
+
 const Empty = "This is an empty description as there is no decription in the db, this will be replaced if the decription for this item is available in db."
+const url = 'https://lablib-api.herokuapp.com/api/v1/image';
 
 const LabsBoxes = ({labs , ChapiterName}) => {
+    console.log("ChapiterName: ", ChapiterName);
     return(
     <div className="ch_card-content">
-        <div className="ch_card_lab getstarted">
+        {/* <div className="ch_card_lab getstarted">
             <div className="ch_card-info">
                 <div className="ch_card_title my-3">
                     <h3><a href="#">Objectifs de Ce Cours</a></h3>
@@ -52,7 +56,7 @@ const LabsBoxes = ({labs , ChapiterName}) => {
             <div className="ch_card-footer">
                 <cite>mardi 19 juillet 2022</cite>
             </div>
-        </div>
+        </div> */}
         {labs.length ?
             labs.map((item) => (
                 <div className="ch_card_lab" key={item.id}>
@@ -90,7 +94,8 @@ const Labs = () => {
     const [labs, setLabs] = useState([]);
     const [chapiter, setChapiter] = useState([]);
     const [chapiters, setChapiters] = useState([]);
-    const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingChapters, setIsLoadingChapters] = useState(true);
     const [loaded, setLoaded] = useState(false);
     const [IsValidURL, setIsValidURL] = useState(true);
 
@@ -103,6 +108,7 @@ const Labs = () => {
                     if(res.ok){
                         let data = await res.json();
                         setChapiter(data);
+                        setIsLoadingChapters(false);
                     }
                     else{
                         let err = await res.json();
@@ -112,7 +118,6 @@ const Labs = () => {
             }
             catch (err){
                 console.log(err);
-                // toast.current.show({ severity: 'error', summary: 'Failed', detail: err, life: 6000 });
             };
         }
 
@@ -158,7 +163,6 @@ const Labs = () => {
             }
             catch (err){
                 console.log(err);
-                // toast.current.show({ severity: 'error', summary: 'Failed', detail: err, life: 6000 });
             };
         }
         !chapiters.length && fetchChapiters();
@@ -192,44 +196,40 @@ const Labs = () => {
                 <h2>Chapiter: <span className="text-warning">{chapiter.name}</span></h2>
                 <p>{chapiter.description || Empty}</p>
             </div>
-            <div className="col-md-4 d-flex justify-content-center">
-                <div className="bg-light d-flex align-items-center justify-content-center" style={{borderRadius:"20%", width:"150px" ,height:"150px"}}>
-                    <div className="row ch_progress_bar">
-                    <h5>50% complété</h5>
-                    <div className="progress">
-                        <div className="progress-bar bg-info" role="progressbar" style={{width: "50%"}} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
+            <div className="col-4">
+                <div className='d-flex justify-content-center'>
+                    { chapiter.image ?
+                        <img src={`${url}/${chapiter.image}`} width="100" alt="logo" />
+                    :
+                        <div className="spinner-border text-light" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>    
+                    }
                 </div>
             </div>
         </div>
+        <div className="row border">
+            <div className="col-md-12 d-flex justify-content-center border">
+                <div className="bg-light d-flex align-items-center justify-content-center" style={{borderRadius:"20%", width:"150px" ,height:"150px"}}>
+                    <div className="row ch_progress_bar">
+                        <h5>50% complété</h5>
+                        <div className="progress">
+                            <div className="progress-bar bg-info" role="progressbar" style={{width: "50%"}} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div className="ch_container">
             {
                 !isLoading ?  
                     <LabsBoxes labs={labs} ChapiterName={ChapiterName}/>
                 :
-                [1,2,3,4,5,6].map((item) => {
-                    return(
-                        <div className="ch_card-content" key={item+1}>
-                            <SkeletonTheme baseColor="#202020" highlightColor="#444" >
-                            <div className="ch_card">
-                                <div className="ch_card-info">
-                                    <div className="ch_card_title my-3">
-                                        <Skeleton/>
-                                    </div>
-                                    <Skeleton count={3} height={25}/>
-                                </div>
-                                <div className="ch_card_body">
-                                    <Skeleton/>
-                                </div>
-                                <div className="ch_card-footer">
-                                    <span className="mx-2"><Skeleton/></span>
-                                </div>
-                            </div>
-                            </SkeletonTheme>
-                        </div>
-                    )
-                })
+                <div className='d-flex justify-content-center align-items-center' style={{height: "20rem"}}>
+                    <div className="spinner-grow" style={{width: "3rem", height: "3rem"}} role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>
+                </div>
             }
         </div>
         </main>

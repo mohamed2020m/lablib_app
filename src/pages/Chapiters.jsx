@@ -2,11 +2,10 @@ import React, {useState, useEffect} from 'react'
 import { useParams } from 'react-router-dom'
 import Skeleton , {SkeletonTheme} from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
+import { useAuthContext } from '../hooks/useAuthContext'
+import {GetCourse, GetCourses, GetCourseItem, JoinCourse} from '../service/CourseService';
+import {findIdCourse, RemoveWhiteSpace, formatDate, fun} from '../helpers/helper';
 
-import {GetCourse, GetCourses, GetCourseItem} from '../service/CourseService';
-import {findIdCourse, levelStr, RemoveWhiteSpace, formatDate, fun} from '../helpers/helper';
-
-import img404 from '../data/Img404.png'
 import courseIcon from '../data/course-18.png'
 import NoPage from "./nopage";
 
@@ -19,13 +18,21 @@ const ChapitersBoxes = ({chapiters, CourseName}) => {
     {chapiters.length ?
     chapiters.map((item) => (
         <div className="ch_card" key={item.id}>
-            <div className="ch_card-image"><img src={item.image ? `${url}/${item.image}` : `${img404}` } width="100" alt={item.name} /></div>
-            <div className="progress_wrapper mx-2 my-3">
+            <div className="ch_card-image">
+                { item.image ?
+                    <img src={`${url}/${item.image}`} width="100" alt={item.name} />
+                :
+                    <div className="spinner-border text-light" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </div>    
+                }
+            </div>
+            {/* <div className="progress_wrapper mx-2 my-3">
                 <div className="progress">
                     <div className="progress-bar bg-info" role="progressbar" style={{width: "50%"}} aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
                 <div className="percentage">50%</div>
-            </div>
+            </div> */}
             <div className="ch_card-info">
                 <div className="ch_card_title my-3">
                     <h3><a href={`${CourseName}/chapiter/${RemoveWhiteSpace(item.name)}`}>{item.name}</a></h3>
@@ -60,8 +67,30 @@ const Chapitres = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [loaded, setLoaded] = useState(false);
     const [IsValidURL, setIsValidURL] = useState(true);
-    
+    // const [isJoined, setIsJoine] = useState(false);
+    const { user} = useAuthContext();
+
     useEffect(() => {
+        // async function fetchJoinCourse(){
+        //     try{
+        //         let Course_id = findIdCourse(CourseName, courses);
+        //         if(Course_id){
+        //             let res = await JoinCourse(Course_id, user.token);
+        //             if(res.ok){
+        //                 let data = await res.json();
+        //                 setIsJoine(true);
+        //             }
+        //             else{
+        //                 let err = await res.json();
+        //                 throw err[0].message;
+        //             }
+        //         }
+        //     }
+        //     catch (err){
+        //         console.log(err);
+        //     };
+        // }
+        
         async function fetchCourse(){
             try{
                 let Course_id = findIdCourse(CourseName, courses);
@@ -79,7 +108,6 @@ const Chapitres = () => {
             }
             catch (err){
                 console.log(err);
-                // toast.current.show({ severity: 'error', summary: 'Failed', detail: err, life: 6000 });
             };
         }
 
@@ -99,9 +127,9 @@ const Chapitres = () => {
             }
             catch (err){
                 console.log(err);
-                // toast.current.show({ severity: 'error', summary: 'Failed', detail: err, life: 6000 });
             };
         }
+
         async function fetchData(CourseName){
             try{
                 let Course_id = findIdCourse(CourseName, courses);
@@ -124,12 +152,14 @@ const Chapitres = () => {
             }
             catch (err){
                 console.log(err);
-                // toast.current.show({ severity: 'error', summary: 'Failed', detail: err, life: 6000 });
             };
         }
+
         !courses.length && fetchCourses();
+        
+
         courses.length && fetchData(CourseName);
-        fetchCourse(CourseName)
+        fetchCourse(CourseName);
 
         fun();
 
@@ -159,7 +189,13 @@ const Chapitres = () => {
             </div>
             <div className="col-4">
                 <div className='d-flex justify-content-center'>
-                    <img src={course.image ? `${url}/${course.image}` : `${img404}` } width="100" alt="logo" />
+                    { course.image ?
+                        <img src={`${url}/${course.image}`} width="100" alt="logo" />
+                    :
+                        <div className="spinner-border text-light" role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>    
+                    }
                 </div>
             </div>
         </div>
@@ -168,29 +204,11 @@ const Chapitres = () => {
                     !isLoading ?  
                         <ChapitersBoxes chapiters={chapiters} CourseName={CourseName}/>
                     :
-                    [1,2,3,4,5,6].map((item) => {
-                        return(
-                            <SkeletonTheme baseColor="#202020" highlightColor="#444" key={item}>
-                                <div className="ch_card">
-                                    <div className="ch_card-image">
-                                        <Skeleton circle={true}/>
-                                    </div>
-                                    <div className="ch_card-info">
-                                        <div className="ch_card_title my-3">
-                                            <Skeleton/>
-                                        </div>
-                                        <Skeleton count={3} height={25}/>
-                                    </div>
-                                    <div className="ch_card_body">
-                                        <Skeleton/>
-                                    </div>
-                                    <div className="ch_card-footer">
-                                        <span className="mx-2"><Skeleton/></span>
-                                    </div>
-                                </div>
-                            </SkeletonTheme>
-                        )
-                    })
+                    <div className='d-flex justify-content-center align-items-center' style={{height: "20rem"}}>
+                        <div className="spinner-grow" style={{width: "3rem", height: "3rem"}} role="status">
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    </div>
                 }
 
                 {!isLoading && chapiters && chapiters.length > 0 ?
