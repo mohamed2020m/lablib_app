@@ -32,12 +32,10 @@ const App = () => {
         if(user){
           const res = await refresh(user.$token);
           console.log("old access token: ", user.token)
-          console.log("exp: ", user.exp);
           if (res.status === 200) {
               const data = await res.json();
               localStorage.setItem('user', JSON.stringify(data));
-              console.log("new access token: ", data.token)
-              // dispatch({type: 'LOGIN', payload: data});
+              console.log("new access token")
           } 
           else {
             // New token didnt received.Remove the previous token and user 
@@ -64,7 +62,8 @@ const App = () => {
   // Trigger API to get a new token before token gets expired.
   useEffect(() => {
       if(user){
-        const interval = setInterval(() => getToken(), 60 * 1000); 
+        console.log("changed")
+        const interval = setInterval(() => getToken(), 14 * 60 * 1000); 
         intervalRef.current = interval;
         return () => clearInterval(interval);
       }
@@ -72,27 +71,6 @@ const App = () => {
   
   
   return (
-    // <div className="App">
-    //   <BrowserRouter>
-    //     <Routes>
-    //         <Route path="/" element={!user ? <Home /> : <Navigate to="/home" />} />
-    //         <Route path="/home" element={user && user.token ? <Dashboard /> : <Navigate to="/" replace state={{ from: location }}/>} />
-    //         <Route path="/categories" element={user && user.token ? <Categories/> : <Navigate to="/login" replace state={{ from: location }}/>} />
-    //         <Route path="/categories/:CategoryName" element={user && user.token ? <Cours /> : <Navigate to="/login" replace state={{ from: location }}/>} />
-    //         <Route path="/categories/:CategoryName/cours/:CourseName" element={user && user.token ? <Chapiter/> : <Navigate to="/login" replace state={{ from: location }}/>} />
-    //         <Route path="categories/:CategoryName/cours/:CourseName/chapiter/:ChapiterName" element={user && user.token ? <Labs />: <Navigate to="/login" replace state={{ from: location }}/>} />
-    //         <Route path="categories/:CategoryName/cours/:CourseName/chapiter/:ChapiterName/lab/:LabName" element={user && user.token ? <Steps /> : <Navigate to="/login" replace state={{ from: location }}/>} />
-    //         <Route path="/profile" element={user && user.token ? <Profile /> : <Navigate to="/login" replace state={{ from: location }}/>} />
-    //         <Route path="/settings" element={user && user.token ? <Settings /> :<Navigate to="/login" replace state={{ from: location }}/>} />
-    //         <Route path="/login" element={!user ? <Login /> : <Navigate to="/home" />} />
-    //         <Route path="/register" element={!user ? <SignUp /> : <Navigate to="/home" />} />
-    //         <Route path="/forgetpassword" element={!user ? <ForgetPassword /> : <Navigate to="/home" />}/>
-    //         <Route path="/contact" element={<Contact />} />
-    //         <Route path="/about" element={<About />} />
-    //         <Route path="/*" element={<NoPage />} />    
-    //     </Routes>
-    //   </BrowserRouter>
-    // </div>
     <div className="App">
       <BrowserRouter>
         <Routes>

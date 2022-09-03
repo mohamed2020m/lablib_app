@@ -25,7 +25,7 @@ export const AuthContextProvider = ({ children }) => {
         async function IsValidToken(){
             try{
                 if(user?.token){
-                    let res = await GetDetailsMe(user.token);
+                    let res = await GetDetailsMe(user?.token);
                     if(res.ok){
                         // console.log("user: ", user);
                         dispatch({ type: 'LOGIN', payload: user }) 
@@ -37,6 +37,7 @@ export const AuthContextProvider = ({ children }) => {
                 }
             }
             catch(err){
+                console.log("err from authContext: ", err)
                 localStorage.removeItem('user')
             }
         }

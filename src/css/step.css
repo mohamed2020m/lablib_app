@@ -59,6 +59,7 @@
         height: 100%;
         width: 100%;
         z-index: 10;
+        overflow-y:auto;
     }
 
     .step-content-Warraper .step_title > h2{
