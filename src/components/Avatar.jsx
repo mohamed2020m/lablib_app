@@ -60,7 +60,7 @@ export default function Avatar() {
                     </button>
                 </div>
                 {userDetails.role === 1 ? 
-                <a href={`http://localhost:3001/verify?token=${user?.token}`} className='mr-1'>
+                <a href={`https://admin-lablib.herokuapp.com/verify?token=${user?.token}`} className='mr-1'>
                     <div>
                         <i className="fa fa-user-cog"></i>
                         <span className='ml-2'>Admin Panel</span>
