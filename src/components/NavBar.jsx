@@ -138,7 +138,7 @@ const Header = () => {
                                     }
                                 </li>
                                 }
-                                <li><a href="/about"><i className="fa fa-info-circle mr-1"></i> à propos</a></li>
+                                <li><a href="/about"><i className="fa fa-users mr-1"></i> Equipe</a></li>
                                 <li><a href="/contact" ><i className="fa fa-address-book mr-1"></i> Contactez Nous</a></li>
                             </ul>
                         </div>

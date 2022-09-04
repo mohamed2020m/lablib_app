@@ -100,7 +100,7 @@ $(function() {
 		if ($('#contactForm').length > 0 ) {
 			$( "#contactForm" ).validate( {
 				rules: {
-					name: "required",
+					name: "requis",
 					email: {
 						required: true,
 						email: true
@@ -111,9 +111,9 @@ $(function() {
 					}
 				},
 				messages: {
-					name: "Please enter your name",
-					email: "Please enter a valid email address",
-					message: "Please enter a message"
+					name: "S'il vous plaît entrez votre nom",
+					email: "S'il vous plaît, mettez une adresse email valide",
+					message: "Veuillez entrer un message"
 				},
 				/* submit via ajax */
 				submitHandler: function(form) {		
@@ -145,7 +145,7 @@ $(function() {
 							}
 						},
 						error: function() {
-							$('#form-message-warning').html("Something went wrong. Please try again.");
+							$('#form-message-warning').html("Quelque chose s'est mal passé. Veuillez réessayer.");
 							$('#form-message-warning').fadeIn();
 							$submit.css('display', 'none');
 						}

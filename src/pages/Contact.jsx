@@ -42,8 +42,8 @@ const Contatct = () => {
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-md-12 form-group">
-                                            <input type="submit" value="Envoyer le Message" class="btn contact-btn btn-primary contact-btn-primary rounded-0 py-2 px-4" />
+                                        <div class="col-md-12 form-group d-flex justify-content-center">
+                                            <input type="submit" value="Envoyer le Message" class="btn contact-btn contact-btn-primary text-white rounded-0 py-2 px-4" />
                                             <span class="submitting"></span>
                                         </div>
                                     </div>
@@ -59,19 +59,19 @@ const Contatct = () => {
                         <div class="col-md-4">
                             <div class="contact-info h-100">
                                 <h3>Plus de Détails</h3>
-                                <p class="mb-5">Envoyez-nous un e-mail, nous sommes heureux de vous aider!</p>
+                                <p class="mb-5 text-light">Envoyez-nous un e-mail, nous sommes heureux de vous aider!</p>
                                 <ul class="list-unstyled">
                                     <li class="d-flex">
                                         <span class="wrap-icon icon-room mr-3"></span>
-                                        <span class="text">Morocco</span>
+                                        <span class="text text-light">Morocco</span>
                                     </li>
                                     <li class="d-flex">
                                         <span class="wrap-icon icon-phone mr-3"></span>
-                                        <span class="text">(+212) 06 59 39 39 21</span>
+                                        <span class="text text-light">(+212) 06 59 39 39 21</span>
                                     </li>
                                     <li class="d-flex">
                                         <span class="wrap-icon icon-envelope mr-3"></span>
-                                        <span class="text">info@exelib.nect</span>
+                                        <span class="text text-light">info@lablib.com</span>
                                     </li>
                                 </ul>
                             </div>

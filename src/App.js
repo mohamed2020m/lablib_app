@@ -17,6 +17,7 @@ import SignUp from './pages/SignUp';
 import About from "./pages/About";
 import ForgetPassword from "./pages/ForgetPassword";
 import NoPage from "./pages/nopage";
+import Helmet from "react-helmet"
 
 import ProtectedRoutes from './components/ProtectedRoutes';
 
@@ -25,6 +26,7 @@ import {refresh} from './service/refrechTokenService';
 const App = () => {
   const { user} = useAuthContext();
   const intervalRef = useRef();
+  const [redirectToLogin, setRedirectToLogin] = useState(false);
 
   // Get new Token
   const getNewUserToken = async () => {
@@ -49,7 +51,8 @@ const App = () => {
     catch (err){
       console.warn("err: ", err)
       localStorage.removeItem("user");
-      location.reload();
+      // location.reload();
+      setRedirectToLogin(true);
     }
   };
   // Get new token if and only if existing token is available
@@ -67,9 +70,8 @@ const App = () => {
         intervalRef.current = interval;
         return () => clearInterval(interval);
       }
-  }, [getToken]);
-  
-  
+  }, [redirectToLogin, getToken]);
+
   return (
     <div className="App">
       <BrowserRouter>
@@ -91,6 +93,22 @@ const App = () => {
             <Route path="/*" element={<NoPage />} />    
         </Routes>
       </BrowserRouter>
+      {
+        redirectToLogin ?
+        <div className="modal fade show" id="reauthonicate" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered" role="document">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h5 className="modal-title" id="exampleModalLongTitle">vous devez vous authentifier à nouveau</h5>
+              </div>
+              <div className="modal-footer">
+                <a type="button" href="/login" className="btn btn-primary">réauthentifier</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        : null
+      }
     </div>
   );
 }

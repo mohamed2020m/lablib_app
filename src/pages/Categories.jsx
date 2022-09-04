@@ -3,7 +3,6 @@ import React,{useEffect, useState} from 'react'
 import Skeleton , {SkeletonTheme} from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 import {GetCategory} from '../service/CategoryService';
-import img404 from '../data/Img404.png'
 import courseIcon from '../data/course-18.png'
 import {RemoveWhiteSpace, fun} from '../helpers/helper'
 
@@ -12,7 +11,7 @@ const Categories = () => {
     const [isLoading, setIsLoading] = useState(true)
 
     const url = 'https://lablib-api.herokuapp.com/api/v1/image';
-    const Empty = "This is an empty description as there is no decription in the db, this will be replaced if the decription for this item is available in db."
+    const Empty = "Ceci est une description vide car il n'y a pas de description dans la base de données, elle sera remplacée si la description de cet article est disponible dans la base de données."
 
     useEffect(() => {
         async function fetchData(){

@@ -48,6 +48,8 @@ const Steps = () => {
     const [start, setStart] = useState(false);
     const [IsValidURL, setIsValidURL] = useState(true);
     const [showSteps, setShowSteps] = useState(false);
+    const [stepDuration, setStepDuration] = useState("");
+    const [isLoadingStepDuration, setIsLoadingSetpDuration] = useState(true);
     const countStep = useRef(0);
     const navigate = useNavigate();
 
@@ -123,6 +125,7 @@ const Steps = () => {
                     let data = await res.json();
                     setStep(data);
                     setIsLoadingContent(false);
+                    setIsLoadingSetpDuration(false);
                 }
                 else{
                     let err = await res.json();
@@ -166,7 +169,7 @@ const Steps = () => {
         //             setActiveSideBar(false);
         //         }})
         // }
-    }, [start, activeSideBar, currentStepId, loaded, isLoadingSteps, isLoadingContent, IsValidURL, showSteps])
+    }, [start, activeSideBar, currentStepId, loaded, isLoadingSteps, isLoadingContent, IsValidURL, showSteps, isLoadingStepDuration])
 
     const handleStepClick = (e, item) => {
         const s = document.querySelector('.StepContainer').childNodes;
@@ -310,7 +313,12 @@ const Steps = () => {
                             <div className='tm-lf_text'>
                                 Temps restant:
                             </div>
-                            <div className='ml-1 tm-lf'>{msToTime(lab.duration)}</div>
+                            {
+                                !isLoadingStepDuration ?
+                                <div className='ml-1 tm-lf'>{msToTime(stepDuration)}</div>
+                                :
+                                <div className='ml-1 tm-lf'>Loading...</div>
+                            }
                         </div>
                     </div>
                 </div>
@@ -324,7 +332,7 @@ const Steps = () => {
                                         <button 
                                             className="border-0 rounded-circle"
                                             style={{backgroundColor:"#3498bb", width:"28px", height:"28px"}}
-                                            onClick={() => {setActiveSideBar((preValue) => !preValue)}}>
+                                            onClick={() => {setActiveSideBar((preValue) => !preValue), setStepDuration(step.duration)}}>
                                             <i 
                                                 className={"icon-arrow-left text-white"}
                                                 style={{width:"20px", height:"20px"}}

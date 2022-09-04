@@ -1,13 +1,11 @@
 import React, {useState, useEffect} from 'react'
 import { useParams } from 'react-router-dom'
-import Skeleton , {SkeletonTheme} from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css'
 
 import {GetChapiter,GetChapiters, GetChapiterItem} from '../service/ChapiterService';
 import {findIdChapiter, formatDate, RemoveWhiteSpace, msToTime} from '../helpers/helper';
 import NoPage from "./nopage";
 
-import img404 from '../data/Img404.png'
 import courseIcon from '../data/course-18.png'
 
 const Empty = "This is an empty description as there is no decription in the db, this will be replaced if the decription for this item is available in db."

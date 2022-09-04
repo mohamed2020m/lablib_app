@@ -7,7 +7,7 @@ import logo from '../data/logo.png'
 import mobileApp from '../data/en_badge_web_generic.png'
 
 const Footer = () => (
-    <footer className="p-3 shadow-sm border-top">
+    <footer className="p-3 shadow-sm border-top mt-3">
         <div className="container">
             <div className="row px-3">
                 <div className="col-sm-4">
@@ -46,15 +46,15 @@ const Footer = () => (
                 </div>
             </div>
             <div className="d-flex flex-column align-items-center">
-                <div>
+                {/* <div>
                     <img src={logo} width="80" height="80" alt="logo"/>
-                </div>
+                </div> */}
                 <div>
                     <h6 className="">Copyright © 2022 - <a href="https://lablib.herokuapp.com/" className="text-info">LabLib</a> - Tous droits réservés</h6>
                 </div>
                 <div>
                     <a href="#">
-                        <img src={mobileApp} alt="mobile app" style={{width:'200px', heigth:'100px'}}/>
+                        <img src={mobileApp} alt="mobile app" style={{width:'150px', heigth:'80px'}}/>
                     </a>
                 </div>
             </div>

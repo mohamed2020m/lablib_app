@@ -727,3 +727,10 @@ nav[data-toggle=toc] .nav .nav>li>a {
 .join_lablib:hover{
     background-color: #eee !important;
 }
+
+@media screen and (max-width:500px) {
+    .page_404{
+        width:100%;
+        height:auto;
+    }
+}

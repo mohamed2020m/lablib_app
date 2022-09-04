@@ -27,7 +27,6 @@ export const AuthContextProvider = ({ children }) => {
                 if(user?.token){
                     let res = await GetDetailsMe(user?.token);
                     if(res.ok){
-                        // console.log("user: ", user);
                         dispatch({ type: 'LOGIN', payload: user }) 
                     }
                     else{
